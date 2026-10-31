@@ -455,12 +455,25 @@ function reportScreenScript(){
    function fit(){
      const p=document.querySelector('.report-page');
      if(!p)return;
-     if(window.matchMedia('print').matches){p.style.transform='none';document.body.style.height='auto';return}
-     const available=Math.max(320,window.innerWidth-12);
+     if(window.matchMedia('print').matches){
+       p.style.transform='none';
+       p.style.position='static';
+       p.style.left='auto';
+       p.style.margin='0';
+       document.body.style.height='auto';
+       return;
+     }
+     const available=Math.max(320,window.innerWidth-20);
      const scale=Math.min(1,available/794);
+     const scaledWidth=794*scale;
      p.style.transform='scale('+scale+')';
      p.style.transformOrigin='top left';
-     document.body.style.height=(1123*scale+16)+'px';
+     p.style.position='relative';
+     p.style.left='50%';
+     p.style.marginLeft=-(scaledWidth/2)+'px';
+     p.style.marginRight='0';
+     document.body.style.height=(1123*scale+20)+'px';
+     document.body.style.overflowX='hidden';
    }
    addEventListener('load',fit);addEventListener('resize',fit);fit();
  })();
