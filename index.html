@@ -157,7 +157,7 @@
 </div>
 </div></section>
 
-<section id="access" class="view"><div class="panel loginbox" id="loginPanel"><h2>🔐 دخول الإدارة والصلاحيات</h2><p class="muted">الواجهة العامة مخصصة للطالبات وأولياء الأمور والزوار. تدخل كل معلمة باسمها ورمزها الشخصي لتظهر لها برامجها وتقاريرها وأرشيفها فقط.</p><div class="role-cards"><div class="role-card"><b>🛡️</b><h3>مدير النظام</h3><button class="btn alt" onclick="showLogin('admin')">دخول مدير النظام</button></div><div class="role-card"><b>📋</b><h3>رائدة النشاط</h3><button class="btn" onclick="showPinRole('activity_leader')">الدخول بالرمز</button></div><div class="role-card"><b>👩‍🏫</b><h3>المعلمات</h3><button class="btn" onclick="showTeacherLogin()">دخول المعلمات</button></div><div class="role-card"><b>🏫</b><h3>إدارة المدرسة</h3><button class="btn gold" onclick="showPinRole('principal')">الدخول بالرمز</button></div></div><div id="pinLogin" class="hidden"><input id="pinRole" type="hidden" value="activity_leader"><label id="pinRoleLabel">الرمز السري</label><input id="pinCode" type="password" inputmode="numeric" maxlength="16"><button class="btn" onclick="pinLogin()">دخول</button></div><div id="teacherLoginBox" class="hidden"><label>اسم المعلمة</label><select id="teacherLoginSelect"><option value="">جارٍ تحميل الأسماء...</option></select><label>الرمز الشخصي</label><input id="teacherLoginPin" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"><button class="btn" onclick="teacherLogin()">دخول المعلمة</button><button class="btn light" type="button" onclick="loadTeacherChoices()">تحديث الأسماء</button></div><div id="adminLoginBox" class="hidden"><p class="permission-note">دخول مدير النظام يستخدم حساب الإدارة المخصص للمنصة.</p><label>البريد الإلكتروني</label><input id="adminEmail" type="email"><label>كلمة المرور</label><input id="adminPass" type="password"><button class="btn alt" onclick="doAdminLogin()">دخول مدير النظام</button></div><p id="loginMsg"></p></div><div class="panel hidden" id="loggedBox"><div class="actions"><span id="who" class="badge"></span><button class="btn gray" onclick="logout()">تسجيل خروج</button></div><p>تم تفعيل الصلاحيات الخاصة بهذا الدور.</p><div id="teacherAccountsAdmin" class="hidden"><hr><h3>👩‍🏫 إدارة حسابات المعلمات</h3><p class="muted">أضيفي اسم المعلمة وحددي لها رمزًا شخصيًا من 8 إلى 16 رقمًا. كل معلمة سترى برامجها وتقاريرها فقط.</p><div class="row"><div><label>اسم المعلمة</label><input id="newTeacherName" placeholder="مثال: مريم الظفيري"></div><div><label>الرمز الشخصي</label><input id="newTeacherPin" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"></div><div style="align-self:end"><button class="btn" onclick="addTeacherAccount()">إضافة المعلمة</button></div></div><p id="teacherAccountsMsg"></p><div id="teacherAccountsList"><p class="muted">جارٍ تحميل الحسابات...</p></div></div></div><p id="teacherPinMsg"></p></div></div></section>
+<section id="access" class="view"><div class="panel loginbox" id="loginPanel"><h2>🔐 دخول الإدارة والصلاحيات</h2><p class="muted">الواجهة العامة مخصصة للطالبات وأولياء الأمور والزوار. تدخل كل معلمة باسمها ورمزها الشخصي لتظهر لها برامجها وتقاريرها وأرشيفها فقط.</p><div class="role-cards"><div class="role-card"><b>🛡️</b><h3>مدير النظام</h3><button class="btn alt" onclick="showLogin('admin')">دخول مدير النظام</button></div><div class="role-card"><b>📋</b><h3>رائدة النشاط</h3><button class="btn" onclick="showPinRole('activity_leader')">الدخول بالرمز</button></div><div class="role-card"><b>👩‍🏫</b><h3>المعلمات</h3><button class="btn" onclick="showTeacherLogin()">دخول المعلمات</button></div><div class="role-card"><b>🏫</b><h3>إدارة المدرسة</h3><button class="btn gold" onclick="showPinRole('principal')">الدخول بالرمز</button></div></div><div id="pinLogin" class="hidden"><input id="pinRole" type="hidden" value="activity_leader"><label id="pinRoleLabel">الرمز السري</label><input id="pinCode" type="password" inputmode="numeric" maxlength="16"><button class="btn" onclick="pinLogin()">دخول</button></div><div id="teacherLoginBox" class="hidden"><label>اسم المعلمة</label><select id="teacherLoginSelect"><option value="">جارٍ تحميل الأسماء...</option></select><label>الرمز الشخصي</label><input id="teacherLoginPin" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"><button class="btn" onclick="teacherLogin()">دخول المعلمة</button><button class="btn light" type="button" onclick="loadTeacherChoices()">تحديث الأسماء</button></div><div id="adminLoginBox" class="hidden"><p class="permission-note">دخول مدير النظام يستخدم حساب الإدارة المخصص للمنصة.</p><label>البريد الإلكتروني</label><input id="adminEmail" type="email"><label>كلمة المرور</label><input id="adminPass" type="password"><button class="btn alt" onclick="doAdminLogin()">دخول مدير النظام</button></div><p id="loginMsg"></p></div><div class="panel hidden" id="loggedBox"><div class="actions"><span id="who" class="badge"></span><button class="btn gray" onclick="logout()">تسجيل خروج</button></div><p>تم تفعيل الصلاحيات الخاصة بهذا الدور.</p><div id="teacherAccountsAdmin" class="hidden"><hr><h3>👩‍🏫 إدارة حسابات المعلمات</h3><p class="muted">يمكن لمدير النظام ورائدة النشاط إضافة المعلمات وتحديد رموزهن الشخصية أو تغييرها. يظهر الرمز هنا فقط لهذين الدورين، بينما ترى كل معلمة برامجها وتقاريرها فقط.</p><div class="row"><div><label>اسم المعلمة</label><input id="newTeacherName" placeholder="مثال: مريم الظفيري"></div><div><label>الرمز الشخصي</label><input id="newTeacherPin" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"></div><div style="align-self:end"><button class="btn" onclick="addTeacherAccount()">إضافة المعلمة</button></div></div><p id="teacherAccountsMsg"></p><div id="teacherAccountsList"><p class="muted">جارٍ تحميل الحسابات...</p></div></div></div></section>
 
 <section id="dashboard" class="view"><div class="panel"><div class="section-head"><h2>📊 مؤشرات الأداء</h2><div class="actions no-print"><span id="dashboardWho" class="badge"></span><button class="btn" onclick="refreshDashboard()">تحديث المؤشرات</button></div></div><div id="metrics" class="metrics"></div><p id="dashMsg"></p></div></section>
 
@@ -205,7 +205,7 @@ function applyViewPermissions(){
    const id=el.dataset.go;
    el.classList.toggle('hidden',allowed!==null&&!allowed.has(id));
  });
- if($('teacherAccountsAdmin'))$('teacherAccountsAdmin').classList.toggle('hidden',auth.mode!=='admin');
+ if($('teacherAccountsAdmin'))$('teacherAccountsAdmin').classList.toggle('hidden',!(auth.mode==='admin'||auth.role==='activity_leader'));
 }
 function setPlanningPermissions(){
  const edit=canPlanEdit();
@@ -226,7 +226,7 @@ function updateAuthUI(){
  $('announcementAdmin').classList.toggle('hidden',!canManageAnnouncements());
  applyViewPermissions();
  setPlanningPermissions();
- if(auth.mode==='admin')loadTeacherAccountsAdmin();
+ if(auth.mode==='admin'||auth.role==='activity_leader')loadTeacherAccountsAdmin();
  loadAnnouncements();
 }
 function showView(id){
@@ -303,15 +303,15 @@ async function teacherLogin(){
  }catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}
 }
 async function loadTeacherAccountsAdmin(){
- if(auth.mode!=='admin'||!$('teacherAccountsList'))return;
+ if(!(auth.mode==='admin'||auth.role==='activity_leader')||!$('teacherAccountsList'))return;
  $('teacherAccountsList').innerHTML='<p class="muted">جارٍ تحميل حسابات المعلمات...</p>';
  try{
   const d=await jsonPost(EP.staff,{action:'teacher_admin_list'},true),items=d.items||[];
-  $('teacherAccountsList').innerHTML=items.length?items.map(x=>`<div class="item"><div class="section-head"><div><b>${esc(x.name)}</b><br><span class="badge">${x.active?'نشط':'موقوف'}</span></div><div class="actions"><button class="btn light" onclick="changeTeacherPin('${x.id}','${esc(x.name)}')">تغيير الرمز</button><button class="btn ${x.active?'danger':'gold'}" onclick="toggleTeacherAccount('${x.id}',${x.active?'false':'true'})">${x.active?'إيقاف الحساب':'تفعيل الحساب'}</button></div></div></div>`).join(''):'<p class="empty">لم تتم إضافة معلمات بعد.</p>';
+  $('teacherAccountsList').innerHTML=items.length?items.map(x=>`<div class="item"><div class="section-head"><div><b>${esc(x.name)}</b><br><span class="badge">${x.active?'نشط':'موقوف'}</span><div style="margin-top:8px"><b>الرمز:</b> ${x.display_pin?`<span class="badge" style="font-size:16px;letter-spacing:2px">${esc(x.display_pin)}</span>`:`<span class="warn">غير متاح للعرض — غيّري الرمز مرة واحدة</span>`}</div></div><div class="actions">${x.display_pin?`<button class="btn gray" onclick="copyTeacherPin('${esc(x.display_pin)}','${esc(x.name)}')">نسخ الرمز</button>`:''}<button class="btn light" onclick="changeTeacherPin('${x.id}','${esc(x.name)}')">تغيير الرمز</button><button class="btn ${x.active?'danger':'gold'}" onclick="toggleTeacherAccount('${x.id}',${x.active?'false':'true'})">${x.active?'إيقاف الحساب':'تفعيل الحساب'}</button></div></div></div>`).join(''):'<p class="empty">لم تتم إضافة معلمات بعد.</p>';
  }catch(e){$('teacherAccountsList').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
 }
 async function addTeacherAccount(){
- if(auth.mode!=='admin')return;
+ if(!(auth.mode==='admin'||auth.role==='activity_leader'))return;
  const name=$('newTeacherName').value.trim(),pin=$('newTeacherPin').value.trim(),msg=$('teacherAccountsMsg');
  if(name.length<3||!/^[0-9]{8,16}$/.test(pin)){msg.className='bad';msg.textContent='اكتبي اسم المعلمة ورمزًا من 8 إلى 16 رقمًا.';return}
  msg.className='';msg.textContent='جارٍ إضافة المعلمة...';
@@ -322,11 +322,19 @@ async function addTeacherAccount(){
   await loadTeacherAccountsAdmin();
  }catch(e){msg.className='bad';msg.textContent=e.message}
 }
+async function copyTeacherPin(pin,name){
+ try{
+  await navigator.clipboard.writeText(pin);
+  notify('تم نسخ رمز '+name);
+ }catch{
+  prompt('انسخي رمز '+name+':',pin);
+ }
+}
 async function changeTeacherPin(id,name){
  const pin=prompt('اكتبي الرمز الجديد للمعلمة '+name+' (من 8 إلى 16 رقمًا):','');
  if(pin===null)return;
  if(!/^[0-9]{8,16}$/.test(pin))return notify('الرمز يجب أن يكون من 8 إلى 16 رقمًا','warn');
- try{await jsonPost(EP.staff,{action:'teacher_set_pin',teacher_id:id,pin},true);notify('تم تغيير رمز المعلمة بنجاح')}catch(e){notify(e.message,'bad')}
+ try{await jsonPost(EP.staff,{action:'teacher_set_pin',teacher_id:id,pin},true);notify('تم تغيير رمز المعلمة بنجاح');await loadTeacherAccountsAdmin()}catch(e){notify(e.message,'bad')}
 }
 async function toggleTeacherAccount(id,active){
  try{
