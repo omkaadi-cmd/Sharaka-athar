@@ -12,7 +12,7 @@
 .announcement{border:1px solid var(--line);border-radius:15px;padding:14px;margin:9px 0;background:#fbfdfc}.announcement h3{margin:0 0 5px}.announcement-meta{font-size:12px;color:var(--muted)}.announcement-image{display:block;max-width:100%;width:auto;height:auto;max-height:none;margin:12px auto 4px;border-radius:14px;border:1px solid var(--line);object-fit:contain;background:#fff}
 .permission-note{border-right:4px solid var(--gold);background:#fff9e9;padding:10px 12px;border-radius:10px;margin:10px 0}.admin-only.hidden{display:none!important}
 .ten-badge{display:inline-block;background:#fff0d1;color:#8b5a00;border:1px solid #e8c878;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:700;margin-inline:6px}
-.impact-section{border:1px solid var(--line);border-radius:14px;margin:14px 0;overflow:hidden}.impact-section>h4{margin:0;background:var(--c);color:#fff;padding:10px 12px}.impact-table{width:100%;border-collapse:collapse}.impact-table th,.impact-table td{border:1px solid #d8e2df;padding:8px;vertical-align:top}.impact-table th{background:#e8f0ee}.impact-table select,.impact-table input,.impact-table textarea{margin:0}.saved-followups{display:grid;gap:10px}.role-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.role-card{border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;background:#fff}.role-card b{display:block;font-size:28px}.program-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:9px 0}.program-summary span{background:#f1f6f5;border-radius:9px;padding:7px}.file-chip{display:inline-block;background:#eef4f3;border-radius:999px;padding:5px 9px;margin:3px;font-size:12px}
+.impact-section{border:1px solid var(--line);border-radius:14px;margin:14px 0;overflow:hidden}.impact-section>h4{margin:0;background:var(--c);color:#fff;padding:10px 12px}.impact-table{width:100%;border-collapse:collapse}.impact-table th,.impact-table td{border:1px solid #d8e2df;padding:8px;vertical-align:top}.impact-table th{background:#e8f0ee}.impact-table select,.impact-table input,.impact-table textarea{margin:0}.saved-followups{display:grid;gap:10px}.role-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.role-card{border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;background:#fff}.role-card b{display:block;font-size:28px}.program-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:9px 0}.program-summary span{background:#f1f6f5;border-radius:9px;padding:7px}.file-chip{display:inline-block;background:#eef4f3;border-radius:999px;padding:5px 9px;margin:3px;font-size:12px}
 @media(max-width:720px){.role-cards{grid-template-columns:1fr}.impact-table{font-size:12px}.impact-table th,.impact-table td{padding:5px}}
 
 .mag-cover-photo{max-width:760px;margin:22px auto 0;border:4px solid #ffffff66;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 10px 26px #0003}
@@ -92,6 +92,7 @@
   <a class="card service" data-go="magazine" href="#magazine"><span><b>📰</b>مجلة النشاط الطلابي</span></a>
   <button type="button" class="card service" onclick="showView('access');showLogin('admin')"><span><b>🛡️</b>مدير النظام</span></button>
   <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showPinRole('activity_leader')"><span><b>📋</b>رائدة النشاط</span></a>
+  <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showPinRole('teacher')"><span><b>👩‍🏫</b>دخول المعلمات</span></a>
   <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showPinRole('principal')"><span><b>🏫</b>إدارة المدرسة</span></a>
  </div>
 </section>
@@ -126,10 +127,10 @@
 
 </div></section>
 
-<section id="follow" class="view"><div class="panel"><div class="section-head"><h2>✅ متابعة رائدة النشاط</h2><div class="actions no-print"><button class="btn gray" onclick="printView('follow')">تصدير / طباعة PDF</button></div></div>
+<section id="follow" class="view"><div class="panel"><div class="section-head"><h2>✅ متابعة رائدة النشاط</h2><div class="actions no-print"><button class="btn gray" onclick="exportFollowupPdf()">تصدير / طباعة PDF</button></div></div>
 <p class="permission-note">أضيف اسم المعلمة لكل سجل متابعة. التعديل والحذف متاح لمدير النظام ورائدة النشاط، بينما يمكن عرض السجلات وتصديرها.</p>
 <div class="row"><div><label>اسم المعلمة *</label><input id="followTeacher" placeholder="اسم المعلمة"></div><div><label>اليوم</label><input id="followDay"></div><div><label>التاريخ</label><input id="followDate" type="date"></div><div><label>رقم الزيارة</label><input id="followVisit"></div></div>
-<div id="followAdminTools" class="actions admin-only hidden no-print"><button class="btn" onclick="newFollowup()">سجل جديد</button><button class="btn" onclick="addFollowRow()">إضافة بند متابعة</button><button class="btn gold" onclick="saveFollowup()">حفظ/تعديل</button><button class="btn danger" id="deleteFollowBtn" onclick="deleteCurrentFollowup()">حذف السجل</button></div>
+<div id="followAdminTools" class="actions admin-only hidden no-print"><button class="btn" onclick="newFollowup()">سجل جديد</button><button class="btn" onclick="addFollowRow()">إضافة بند متابعة</button><button class="btn gold" onclick="saveFollowup()">حفظ/تعديل</button><button class="btn danger" id="deleteFollowBtn" onclick="deleteCurrentFollowup()">حذف السجل</button></div><p id="followMsg"></p>
 <div class="table-wrap"><table class="tbl" id="followTable"><thead><tr><th>التصنيف</th><th>بند المتابعة</th><th>الفصل الأول</th><th>الفصل الثاني</th><th>ملاحظات</th><th class="no-print admin-only-col">حذف البند</th></tr></thead><tbody></tbody></table></div>
 <hr><h3>سجلات المتابعة المحفوظة</h3><div id="followSaved" class="saved-followups"><p class="empty">جارٍ التحميل...</p></div>
 </div></section>
@@ -156,7 +157,7 @@
 </div>
 </div></section>
 
-<section id="access" class="view"><div class="panel loginbox" id="loginPanel"><h2>🔐 دخول الإدارة والصلاحيات</h2><p class="muted">المنصة مفتوحة للعرض والإدخال العام، ويستخدم الدخول الإداري لإظهار أدوات الإدارة والتعديل والأرشيف والتحرير.</p><div class="role-cards"><div class="role-card"><b>🛡️</b><h3>مدير النظام</h3><button class="btn alt" onclick="showLogin('admin')">دخول مدير النظام</button></div><div class="role-card"><b>📋</b><h3>رائدة النشاط</h3><button class="btn" onclick="showPinRole('activity_leader')">الدخول بالرمز</button></div><div class="role-card"><b>🏫</b><h3>إدارة المدرسة</h3><button class="btn gold" onclick="showPinRole('principal')">الدخول بالرمز</button></div></div><div id="pinLogin" class="hidden"><input id="pinRole" type="hidden" value="activity_leader"><label id="pinRoleLabel">الرمز السري</label><input id="pinCode" type="password" inputmode="numeric" maxlength="16"><button class="btn" onclick="pinLogin()">دخول</button></div><div id="adminLoginBox" class="hidden"><p class="permission-note">دخول مدير النظام يستخدم حساب الإدارة المخصص للمنصة.</p><label>البريد الإلكتروني</label><input id="adminEmail" type="email"><label>كلمة المرور</label><input id="adminPass" type="password"><button class="btn alt" onclick="doAdminLogin()">دخول مدير النظام</button></div><p id="loginMsg"></p></div><div class="panel hidden" id="loggedBox"><div class="actions"><span id="who" class="badge"></span><button class="btn gray" onclick="logout()">تسجيل خروج</button></div><p>تم تفعيل الصلاحيات الخاصة بهذا الدور.</p></div></section>
+<section id="access" class="view"><div class="panel loginbox" id="loginPanel"><h2>🔐 دخول الإدارة والصلاحيات</h2><p class="muted">الواجهة العامة مخصصة للطالبات وأولياء الأمور والزوار. تستخدم المعلمات ورائدة النشاط والإدارة الدخول المخصص لإظهار أدوات العمل المناسبة لكل دور.</p><div class="role-cards"><div class="role-card"><b>🛡️</b><h3>مدير النظام</h3><button class="btn alt" onclick="showLogin('admin')">دخول مدير النظام</button></div><div class="role-card"><b>📋</b><h3>رائدة النشاط</h3><button class="btn" onclick="showPinRole('activity_leader')">الدخول بالرمز</button></div><div class="role-card"><b>👩‍🏫</b><h3>المعلمات</h3><button class="btn" onclick="showPinRole('teacher')">دخول المعلمات</button></div><div class="role-card"><b>🏫</b><h3>إدارة المدرسة</h3><button class="btn gold" onclick="showPinRole('principal')">الدخول بالرمز</button></div></div><div id="pinLogin" class="hidden"><input id="pinRole" type="hidden" value="activity_leader"><label id="pinRoleLabel">الرمز السري</label><input id="pinCode" type="password" inputmode="numeric" maxlength="16"><button class="btn" onclick="pinLogin()">دخول</button></div><div id="adminLoginBox" class="hidden"><p class="permission-note">دخول مدير النظام يستخدم حساب الإدارة المخصص للمنصة.</p><label>البريد الإلكتروني</label><input id="adminEmail" type="email"><label>كلمة المرور</label><input id="adminPass" type="password"><button class="btn alt" onclick="doAdminLogin()">دخول مدير النظام</button></div><p id="loginMsg"></p></div><div class="panel hidden" id="loggedBox"><div class="actions"><span id="who" class="badge"></span><button class="btn gray" onclick="logout()">تسجيل خروج</button></div><p>تم تفعيل الصلاحيات الخاصة بهذا الدور.</p><div id="teacherPinSetup" class="hidden"><hr><h3>🔐 تعيين رمز دخول المعلمات</h3><p class="muted">يحدده مدير النظام فقط. يجب أن يكون من 8 إلى 16 رقمًا ويمكن تغييره لاحقًا.</p><div class="row"><div><label>الرمز الجديد للمعلمات</label><input id="teacherPinNew" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"></div><div style="align-self:end"><button class="btn" onclick="setTeacherPin()">حفظ رمز المعلمات</button></div></div><p id="teacherPinMsg"></p></div></div></section>
 
 <section id="dashboard" class="view"><div class="panel"><div class="section-head"><h2>📊 مؤشرات الأداء</h2><div class="actions no-print"><span id="dashboardWho" class="badge"></span><button class="btn" onclick="refreshDashboard()">تحديث المؤشرات</button></div></div><div id="metrics" class="metrics"></div><p id="dashMsg"></p></div></section>
 
@@ -182,12 +183,30 @@ const EP={staff:BASE+'/functions/v1/staff-code-access',ops:BASE+'/functions/v1/s
 let auth={mode:sessionStorage.getItem('sa_mode')||'',role:sessionStorage.getItem('sharaka_staff_role')||'',token:sessionStorage.getItem('sharaka_staff_token')||'',bearer:sessionStorage.getItem('sa_bearer')||''},pendingView='',magData={issues:[],articles:[]},programCache={},reportCache={},followupCache=[],followCurrentId='',editingProgramId='';
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const restricted=new Set();
-function roleName(){return auth.mode==='admin'?'مدير النظام':auth.role==='activity_leader'?'رائدة النشاط':auth.role==='principal'?'إدارة المدرسة':''}
-function canEdit(){return true}
+function roleName(){return auth.mode==='admin'?'مدير النظام':auth.role==='activity_leader'?'رائدة النشاط':auth.role==='teacher'?'المعلمات':auth.role==='principal'?'إدارة المدرسة':''}
+function canEdit(){return !!auth.mode}
 function canArchive(){return auth.mode==='admin'||auth.role==='activity_leader'}
 function canPlanEdit(){return auth.mode==='admin'||auth.role==='activity_leader'}
 function canManageAnnouncements(){return auth.mode==='admin'||auth.role==='activity_leader'||auth.role==='principal'}
 function canMagazineEdit(){return auth.mode==='admin'||auth.role==='principal'||auth.role==='activity_leader'}
+const PUBLIC_VIEWS=new Set(['home','vision','goals','submit','magazine','access']);
+const TEACHER_VIEWS=new Set([...PUBLIC_VIEWS,'programs','reports','impact','archive']);
+const PRINCIPAL_VIEWS=new Set([...PUBLIC_VIEWS,'plan','follow','dashboard','programs','reports','impact','submissions','archive']);
+function allowedViews(){
+ if(auth.mode==='admin'||auth.role==='activity_leader')return null;
+ if(auth.role==='principal')return PRINCIPAL_VIEWS;
+ if(auth.role==='teacher')return TEACHER_VIEWS;
+ return PUBLIC_VIEWS;
+}
+function viewAllowed(id){const s=allowedViews();return s===null||s.has(id)}
+function applyViewPermissions(){
+ const allowed=allowedViews();
+ document.querySelectorAll('#home [data-go]').forEach(el=>{
+   const id=el.dataset.go;
+   el.classList.toggle('hidden',allowed!==null&&!allowed.has(id));
+ });
+ if($('teacherPinSetup'))$('teacherPinSetup').classList.toggle('hidden',auth.mode!=='admin');
+}
 function setPlanningPermissions(){
  const edit=canPlanEdit();
  ['planAdminTools','followAdminTools'].forEach(id=>{if($(id))$(id).classList.toggle('hidden',!edit)});
@@ -196,15 +215,61 @@ function setPlanningPermissions(){
  document.querySelectorAll('#planTable input,#planTable select,#planTable textarea,#followTable input,#followTable select,#followTable textarea').forEach(x=>x.disabled=!edit);
  if($('deleteFollowBtn'))$('deleteFollowBtn').classList.toggle('hidden',!edit||!followCurrentId);
 }
-function updateAuthUI(){let logged=!!auth.mode;$('loginPanel').classList.toggle('hidden',logged);$('loggedBox').classList.toggle('hidden',!logged);$('who').textContent=roleName();if($('accessNav'))$('accessNav').textContent=logged?roleName():'دخول الإدارة';if($('archiveService'))$('archiveService').classList.remove('hidden');$('magAdminPanel').classList.toggle('hidden',!canMagazineEdit());$('announcementAdmin').classList.toggle('hidden',!canManageAnnouncements());setPlanningPermissions();loadAnnouncements()}
-function showView(id){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('#nav [data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===id));history.replaceState(null,'','#'+id);scrollTo(0,0);if(id==='home')loadAnnouncements();if(id==='plan')loadPlanServer();if(id==='follow')loadFollowups();if(id==='dashboard')refreshDashboard();if(id==='programs')loadPrograms();if(id==='reports')loadReports();if(id==='impact')loadImpactPrograms();if(id==='submissions')loadSubmissions();if(id==='archive')loadArchive();if(id==='magazine'){loadMagazine();updateAuthUI()}}
+function updateAuthUI(){
+ let logged=!!auth.mode;
+ $('loginPanel').classList.toggle('hidden',logged);
+ $('loggedBox').classList.toggle('hidden',!logged);
+ $('who').textContent=roleName();
+ if($('accessNav'))$('accessNav').textContent=logged?roleName():'دخول المستخدمين';
+ if($('archiveService'))$('archiveService').classList.toggle('hidden',!viewAllowed('archive'));
+ $('magAdminPanel').classList.toggle('hidden',!canMagazineEdit());
+ $('announcementAdmin').classList.toggle('hidden',!canManageAnnouncements());
+ applyViewPermissions();
+ setPlanningPermissions();
+ loadAnnouncements();
+}
+function showView(id){
+ if(!viewAllowed(id)){
+   if(!auth.mode){
+     pendingView=id;
+     notify('هذا القسم مخصص للمستخدمين المسجلين. اختاري نوع الدخول المناسب.','warn');
+     id='access';
+   }else{
+     notify('هذا القسم غير متاح لصلاحية '+roleName(),'warn');
+     id='home';
+   }
+ }
+ document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===id));
+ document.querySelectorAll('#nav [data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view===id));
+ history.replaceState(null,'','#'+id);scrollTo(0,0);
+ if(id==='home')loadAnnouncements();
+ if(id==='plan')loadPlanServer();
+ if(id==='follow')loadFollowups();
+ if(id==='dashboard')refreshDashboard();
+ if(id==='programs')loadPrograms();
+ if(id==='reports')loadReports();
+ if(id==='impact')loadImpactPrograms();
+ if(id==='submissions')loadSubmissions();
+ if(id==='archive')loadArchive();
+ if(id==='magazine'){loadMagazine();updateAuthUI()}
+}
 document.querySelectorAll('[data-view]').forEach(b=>b.onclick=e=>{e.preventDefault();showView(b.dataset.view)});document.querySelectorAll('[data-go]').forEach(b=>b.onclick=e=>{e.preventDefault();showView(b.dataset.go)});
 function apiAuth(headers={},body={}){if(auth.mode==='admin')headers.Authorization='Bearer '+auth.bearer;else if(auth.token)body.token=auth.token;return [headers,body]}
 function friendlyNetworkError(e){let m=String(e?.message||e||'');if(/load failed|failed to fetch|networkerror|network request failed/i.test(m))return 'تعذر الاتصال بالخادم من هذا الملف المحلي. أغلقي الملف وافتحيه من جديد، وإذا استمرت المشكلة نستخدم رابط GitHub للاختبار الكامل.';return m||'تعذر الاتصال بالخادم'}
 async function jsonPost(url,body={},privateCall=true){let headers={'Content-Type':'application/json'};if(privateCall)[headers,body]=apiAuth(headers,body);let r;try{r=await fetch(url,{method:'POST',headers,body:JSON.stringify(body),cache:'no-store'})}catch(e){throw Error(friendlyNetworkError(e))}let d;try{d=await r.json()}catch{throw Error('استجابة غير صالحة من الخادم')}if(!r.ok)throw Error(d.error||'تعذر تنفيذ الطلب');return d}
 async function checkServer(){let el=$('serverStatus');if(!el)return;el.className='muted';el.textContent='جارٍ الفحص...';try{await jsonPost(EP.ops,{action:'dashboard'},false);el.className='ok';el.textContent='متصل بالخادم'}catch(e){el.className='bad';el.textContent=friendlyNetworkError(e)}}
 function showLogin(t){$('pinLogin').classList.toggle('hidden',t!=='pin');$('adminLoginBox').classList.toggle('hidden',t!=='admin');$('loginMsg').textContent='';}
-function showPinRole(role){$('pinRole').value=role;$('pinRoleLabel').textContent=role==='activity_leader'?'رمز رائدة النشاط':'رمز إدارة المدرسة';showLogin('pin');$('pinCode').focus()}
+function showPinRole(role){$('pinRole').value=role;$('pinRoleLabel').textContent=role==='activity_leader'?'رمز رائدة النشاط':role==='teacher'?'رمز دخول المعلمات':'رمز إدارة المدرسة';showLogin('pin');$('pinCode').focus()}
+async function setTeacherPin(){
+ if(auth.mode!=='admin')return notify('تعيين رمز المعلمات متاح لمدير النظام فقط','bad');
+ const pin=$('teacherPinNew').value.trim(),msg=$('teacherPinMsg');
+ if(!/^[0-9]{8,16}$/.test(pin)){msg.className='bad';msg.textContent='اكتبي رمزًا من 8 إلى 16 رقمًا.';return}
+ msg.className='';msg.textContent='جارٍ حفظ الرمز...';
+ try{
+  await jsonPost(EP.staff,{action:'setup',role:'teacher',pin},true);
+  $('teacherPinNew').value='';msg.className='ok';msg.textContent='تم حفظ رمز دخول المعلمات بنجاح.';
+ }catch(e){msg.className='bad';msg.textContent=e.message}
+}
 async function pinLogin(){let role=$('pinRole').value,pin=$('pinCode').value.trim();$('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';try{let d=await jsonPost(EP.staff,{action:'login',role,pin},false);auth={mode:'staff',role:d.role,token:d.token,bearer:''};sessionStorage.setItem('sa_mode','staff');sessionStorage.setItem('sharaka_staff_role',d.role);sessionStorage.setItem('sharaka_staff_token',d.token);$('pinCode').value='';updateAuthUI();let go=pendingView||'home';pendingView='';showView(go)}catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}}
 async function doAdminLogin(){let email=$('adminEmail').value.trim(),password=$('adminPass').value;$('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';try{let r;try{r=await fetch(BASE+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})})}catch(ne){throw Error(friendlyNetworkError(ne))}let d=await r.json();if(!r.ok||!d.access_token)throw Error('بيانات الدخول غير صحيحة');auth={mode:'admin',role:'super_admin',token:'',bearer:d.access_token};sessionStorage.setItem('sa_mode','admin');sessionStorage.setItem('sa_bearer',d.access_token);await ops('dashboard');$('adminPass').value='';updateAuthUI();let go=pendingView||'home';pendingView='';showView(go)}catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}}
 function logout(){sessionStorage.removeItem('sa_mode');sessionStorage.removeItem('sa_bearer');sessionStorage.removeItem('sharaka_staff_token');sessionStorage.removeItem('sharaka_staff_role');auth={mode:'',role:'',token:'',bearer:''};updateAuthUI();showView('home')}
@@ -557,7 +622,7 @@ function addPlanRow(a={}){a=planObj(a);let tr=document.createElement('tr'),n=$('
 function renumberPlan(){[...$('planTable').tBodies[0].rows].forEach((r,i)=>r.cells[0].textContent=i+1)}
 function collectPlanEntries(){return [...$('planTable').tBodies[0].rows].map(r=>({domain:r.cells[1].querySelector('select').value,program:r.cells[2].querySelector('input').value,objective:r.cells[3].querySelector('textarea').value,mechanism:r.cells[4].querySelector('textarea').value,timing:r.cells[5].querySelector('input').value,responsible:r.cells[6].querySelector('input').value,audience:r.cells[7].querySelector('input').value,achievement_indicator:r.cells[8].querySelector('textarea').value,evidence:r.cells[9].querySelector('textarea').value,execution_status:r.cells[10].querySelector('select').value}))}
 function renderPlanEntries(rows){$('planTable').tBodies[0].innerHTML='';(rows?.length?rows:defaultPlan).forEach(addPlanRow);renumberPlan();setPlanningPermissions()}
-async function loadPlanServer(){if(!$('planTable'))return;try{const d=await planning('get_plan',{school_year:$('planYear').value||'1448هـ',term:$('planTerm').value||'الأول'},false),p=d.plan;if(p){$('planSchool').value=p.school_name||$('planSchool').value;$('planYear').value=p.school_year||'1448هـ';$('planTerm').value=p.term||'الأول';$('planLeader').value=p.leader_name||'';renderPlanEntries(p.entries||[])}else renderPlanEntries(defaultPlan)}catch(e){renderPlanEntries(defaultPlan);console.warn(e)}setPlanningPermissions()}
+async function loadPlanServer(){if(!$('planTable'))return;try{const d=await planning('get_plan',{school_year:$('planYear').value||'1448هـ',term:$('planTerm').value||'الأول'}),p=d.plan;if(p){$('planSchool').value=p.school_name||$('planSchool').value;$('planYear').value=p.school_year||'1448هـ';$('planTerm').value=p.term||'الأول';$('planLeader').value=p.leader_name||'';renderPlanEntries(p.entries||[])}else renderPlanEntries(defaultPlan)}catch(e){renderPlanEntries(defaultPlan);console.warn(e)}setPlanningPermissions()}
 async function savePlanServer(){if(!canPlanEdit())return alert('التعديل متاح لمدير النظام ورائدة النشاط فقط');try{await planning('save_plan',{school_name:$('planSchool').value,school_year:$('planYear').value,term:$('planTerm').value,leader_name:$('planLeader').value,entries:collectPlanEntries()});alert('تم حفظ خطة النشاط مركزيًا بنجاح');await loadPlanServer()}catch(e){alert(e.message)}}
 function copyPlanData(){if(!canPlanEdit())return alert('النسخ الإداري متاح لمدير النظام ورائدة النشاط');let rows=collectPlanEntries(),text=['م | المجال | البرنامج | الهدف | آلية التنفيذ | الزمن | المسؤول | الفئة المستهدفة | مؤشر الإنجاز | الشواهد | حالة التنفيذ',...rows.map((r,i)=>[i+1,r.domain,r.program,r.objective,r.mechanism,r.timing,r.responsible,r.audience,r.achievement_indicator,r.evidence,r.execution_status].join(' | '))].join('\n');navigator.clipboard?.writeText(text).then(()=>alert('تم نسخ بيانات الخطة')).catch(()=>alert(text))}
 function resetPlanDraft(){if(!canPlanEdit())return;if(!confirm('إعادة محتوى النموذج إلى البنود الخمسة الافتراضية؟ لن يتم الحفظ إلا عند الضغط على حفظ التعديلات.'))return;renderPlanEntries(defaultPlan)}
@@ -565,8 +630,57 @@ function addFollowRow(row={}){if(Array.isArray(row))row={category:row[0],item:ro
 function collectFollowItems(){return [...$('followTable').tBodies[0].rows].map(r=>({category:r.cells[0].querySelector('input').value,item:r.cells[1].querySelector('textarea').value,term1_status:r.cells[2].querySelector('select').value,term2_status:r.cells[3].querySelector('select').value,notes:r.cells[4].querySelector('textarea').value}))}
 function newFollowup(){followCurrentId='';$('followTeacher').value='';$('followDay').value='';$('followDate').value='';$('followVisit').value='';$('followTable').tBodies[0].innerHTML='';followItems.forEach(x=>addFollowRow({category:x[0],item:x[1],term1_status:'تم',term2_status:'تم',notes:''}));setPlanningPermissions()}
 function openFollowup(id){let x=followupCache.find(v=>v.id===id);if(!x)return;followCurrentId=x.id;$('followTeacher').value=x.teacher_name||'';$('followDay').value=x.day_text||'';$('followDate').value=x.visit_date||'';$('followVisit').value=x.visit_number||'';$('followTable').tBodies[0].innerHTML='';(x.items||[]).forEach(addFollowRow);setPlanningPermissions();scrollTo({top:$('follow').offsetTop,behavior:'smooth'})}
-async function loadFollowups(){if(!$('followSaved'))return;try{let d=await planning('list_followups',{},false);followupCache=d.items||[];$('followSaved').innerHTML=followupCache.length?followupCache.map(x=>`<div class="item"><div class="section-head"><div><h3>${esc(x.teacher_name)}</h3><p class="muted">${esc(x.day_text||'')} ${x.visit_date?'| '+esc(x.visit_date):''} ${x.visit_number?'| الزيارة '+esc(x.visit_number):''}</p></div><button class="btn light" onclick="openFollowup('${x.id}')">فتح السجل</button></div></div>`).join(''):'<p class="empty">لا توجد سجلات متابعة محفوظة.</p>';if(!followCurrentId&&$('followTable').tBodies[0].rows.length===0)newFollowup()}catch(e){$('followSaved').innerHTML='<p class="bad">'+esc(e.message)+'</p>';if($('followTable').tBodies[0].rows.length===0)newFollowup()}setPlanningPermissions()}
-async function saveFollowup(){if(!canPlanEdit())return alert('التعديل متاح لمدير النظام ورائدة النشاط فقط');let teacher=$('followTeacher').value.trim();if(!teacher)return alert('اكتبي اسم المعلمة');try{let d=await planning('save_followup',{id:followCurrentId||undefined,teacher_name:teacher,day_text:$('followDay').value,visit_date:$('followDate').value,visit_number:$('followVisit').value,items:collectFollowItems()});followCurrentId=d.item?.id||followCurrentId;alert('تم حفظ سجل المتابعة');await loadFollowups()}catch(e){alert(e.message)}}
+async function loadFollowups(){
+ if(!$('followSaved'))return;
+ try{
+  let d=await planning('list_followups'),items=d.items||[];
+  followupCache=items;
+  $('followSaved').innerHTML=items.length?items.map(x=>`<div class="item"><div class="section-head"><div><h3>${esc(x.teacher_name)}</h3><p class="muted">${esc(x.day_text||'')} ${x.visit_date?'| '+esc(x.visit_date):''} ${x.visit_number?'| الزيارة '+esc(x.visit_number):''}</p></div><div class="actions"><button class="btn light" onclick="openFollowup('${x.id}')">فتح السجل</button><button class="btn gray" onclick="exportSavedFollowup('${x.id}')">تصدير PDF</button></div></div></div>`).join(''):'<p class="empty">لا توجد سجلات متابعة محفوظة.</p>';
+  if(!followCurrentId&&$('followTable').tBodies[0].rows.length===0)newFollowup();
+ }catch(e){
+  $('followSaved').innerHTML='<p class="bad">'+esc(e.message)+'</p>';
+  if($('followTable').tBodies[0].rows.length===0)newFollowup();
+ }
+ setPlanningPermissions();
+}
+async function saveFollowup(){
+ if(!canPlanEdit())return notify('الحفظ متاح لمدير النظام ورائدة النشاط فقط','bad');
+ let teacher=$('followTeacher').value.trim(),msg=$('followMsg');
+ if(!teacher){msg.className='bad';msg.textContent='اكتبي اسم المعلمة أولًا.';return}
+ msg.className='';msg.textContent='جارٍ حفظ سجل المتابعة...';
+ try{
+  let d=await planning('save_followup',{id:followCurrentId||undefined,teacher_name:teacher,day_text:$('followDay').value,visit_date:$('followDate').value,visit_number:$('followVisit').value,items:collectFollowItems()});
+  followCurrentId=d.item?.id||followCurrentId;
+  msg.className='ok';msg.textContent='تم حفظ سجل متابعة '+teacher+' بنجاح.';
+  notify('تم حفظ سجل المتابعة بنجاح');
+  await loadFollowups();
+ }catch(e){msg.className='bad';msg.textContent=e.message;notify(e.message,'bad')}
+}
+
+function currentFollowupData(){
+ return {
+  teacher_name:$('followTeacher')?.value?.trim()||'',
+  day_text:$('followDay')?.value||'',
+  visit_date:$('followDate')?.value||'',
+  visit_number:$('followVisit')?.value||'',
+  items:collectFollowItems()
+ };
+}
+function followupPrintHtml(x){
+ const rows=(x.items||[]).map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.category||'')}</td><td>${esc(r.item||'')}</td><td>${esc(r.term1_status||'')}</td><td>${esc(r.term2_status||'')}</td><td>${esc(r.notes||'')}</td></tr>`).join('');
+ return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>متابعة رائدة النشاط - ${esc(x.teacher_name||'')}</title><style>@page{size:A4 portrait;margin:10mm}*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;color:#173f4c;-webkit-print-color-adjust:exact;print-color-adjust:exact}.page{width:100%;border-top:8px solid #14566a}.head{text-align:center;border-bottom:2px solid #a98b4d;padding:12px 0 10px}.school{font-weight:800;font-size:16px}.head h1{margin:6px 0;color:#14566a;font-size:25px}.meta{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:6px;margin:12px 0}.box{border:1px solid #ccd9d6;border-radius:7px;padding:7px}.box b{display:block;color:#14566a;font-size:11px}table{width:100%;border-collapse:collapse;font-size:10.5px}th,td{border:1px solid #cbd8d4;padding:5px;text-align:right;vertical-align:top}th{background:#eaf2f0;color:#14566a}.sign{display:grid;grid-template-columns:1fr 1fr;gap:50px;text-align:center;margin-top:22px;font-weight:700}.name{color:#14566a;font-size:15px;margin-top:4px}.foot{text-align:center;color:#71858a;font-size:10px;margin-top:14px}@media print{body{background:#fff}}</style></head><body><div class="page"><div class="head"><div class="school">الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><h1>متابعة رائدة النشاط</h1><div>العام الدراسي 1448هـ</div></div><div class="meta"><div class="box"><b>اسم المعلمة</b>${esc(x.teacher_name||'—')}</div><div class="box"><b>اليوم</b>${esc(x.day_text||'—')}</div><div class="box"><b>التاريخ</b>${esc(x.visit_date||'—')}</div><div class="box"><b>رقم الزيارة</b>${esc(x.visit_number||'—')}</div></div><table><thead><tr><th>م</th><th>التصنيف</th><th>بند المتابعة</th><th>الفصل الأول</th><th>الفصل الثاني</th><th>ملاحظات</th></tr></thead><tbody>${rows}</tbody></table><div class="sign"><div>رائدة النشاط<div class="name">هند الشمري</div></div><div>مديرة المدرسة<div class="name">شعاع العنزي</div></div></div><div class="foot">منصة شراكة وأثر</div></div><script>setTimeout(()=>{window.focus();window.print()},500)<\/script></body></html>`;
+}
+function openFollowupPrint(x){
+ if(!x?.teacher_name)return notify('اختاري سجل متابعة أو اكتبي اسم المعلمة أولًا','warn');
+ const w=window.open('','_blank');if(!w)return notify('تعذر فتح نافذة التصدير. افتحي المنصة في Safari مباشرة.','warn');
+ w.document.open();w.document.write(followupPrintHtml(x));w.document.close();
+}
+function exportFollowupPdf(){openFollowupPrint(currentFollowupData())}
+function exportSavedFollowup(id){
+ const x=followupCache.find(v=>v.id===id);
+ if(!x)return notify('تعذر العثور على سجل المتابعة','bad');
+ openFollowupPrint(x);
+}
 async function deleteCurrentFollowup(){if(!canPlanEdit()||!followCurrentId)return;if(!confirm('حذف سجل متابعة هذه المعلمة؟'))return;try{await planning('delete_followup',{id:followCurrentId});followCurrentId='';newFollowup();await loadFollowups()}catch(e){alert(e.message)}}
 function savePlanning(){let d={vision:document.querySelector('[data-plan=vision]')?.innerHTML||'',mission:document.querySelector('[data-plan=mission]')?.innerHTML||'',goals:[...$('goalsGrid').children].map(x=>x.innerHTML)};localStorage.setItem('sa_static_planning_v1',JSON.stringify(d));alert('تم حفظ الرؤية والرسالة والأهداف على هذا الجهاز')}
 function loadStaticPlanning(){try{let d=JSON.parse(localStorage.getItem('sa_static_planning_v1')||'{}');if(d.vision)document.querySelector('[data-plan=vision]').innerHTML=d.vision;if(d.mission)document.querySelector('[data-plan=mission]').innerHTML=d.mission;(d.goals||[]).forEach((v,i)=>{if($('goalsGrid').children[i])$('goalsGrid').children[i].innerHTML=v})}catch{}}
