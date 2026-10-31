@@ -11,10 +11,22 @@
 .ten-badge{display:inline-block;background:#fff0d1;color:#8b5a00;border:1px solid #e8c878;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:700;margin-inline:6px}
 .impact-section{border:1px solid var(--line);border-radius:14px;margin:14px 0;overflow:hidden}.impact-section>h4{margin:0;background:var(--c);color:#fff;padding:10px 12px}.impact-table{width:100%;border-collapse:collapse}.impact-table th,.impact-table td{border:1px solid #d8e2df;padding:8px;vertical-align:top}.impact-table th{background:#e8f0ee}.impact-table select,.impact-table input,.impact-table textarea{margin:0}.saved-followups{display:grid;gap:10px}.role-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.role-card{border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;background:#fff}.role-card b{display:block;font-size:28px}.program-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px;margin:9px 0}.program-summary span{background:#f1f6f5;border-radius:9px;padding:7px}.file-chip{display:inline-block;background:#eef4f3;border-radius:999px;padding:5px 9px;margin:3px;font-size:12px}
 @media(max-width:720px){.role-cards{grid-template-columns:1fr}.impact-table{font-size:12px}.impact-table th,.impact-table td{padding:5px}}
+
+.mag-cover-photo{max-width:760px;margin:22px auto 0;border:4px solid #ffffff66;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 10px 26px #0003}
+.mag-cover-photo img{display:block;width:100%;height:280px;object-fit:cover}
+.mag-cover-photo .cap{background:#fff;color:#173f4c;padding:8px 12px;font-size:13px}
+.story-card{display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;border-bottom:1px solid var(--line);padding:16px 0}
+.story-card img{width:160px;height:115px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.story-card.no-photo{grid-template-columns:1fr}
+.mag-help{background:#eef7f4;border-right:5px solid var(--c2);padding:10px 13px;border-radius:10px;margin:10px 0}
+#appToast{position:fixed;left:16px;bottom:20px;z-index:9999;max-width:min(420px,90vw);padding:12px 16px;border-radius:12px;box-shadow:0 8px 28px #0003;font-weight:700;display:none}
+#appToast.ok{display:block;background:#17613e;color:#fff}#appToast.bad{display:block;background:#a12f2f;color:#fff}#appToast.warn{display:block;background:#8b6508;color:#fff}
+@media(max-width:650px){.mag-cover-photo img{height:190px}.story-card{grid-template-columns:110px 1fr}.story-card img{width:110px;height:90px}}
+
 @media print{.top,.no-print,.hero{display:none!important}body{background:#fff}.wrap{max-width:none;padding:0}.view{display:none!important}.view.printing{display:block!important}.panel{box-shadow:none;border:0;margin:0}.certificate{display:block!important}.print-only{display:block}.table-wrap{overflow:visible;border:0}.tbl{min-width:0;font-size:11px}.btn{display:none!important}}
 </style>
 </head>
-<body>
+<body><div id="appToast" aria-live="polite"></div>
 <nav class="top no-print" id="nav"><a href="#home" data-view="home" class="active">الرئيسية</a><a href="#submit" data-view="submit">إرسال مشاركة</a><a href="#magazine" data-view="magazine">المجلة</a><a href="#access" data-view="access" id="accessNav">دخول الإدارة</a></nav>
 <header class="hero"><div>الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><h1>شراكة وأثر</h1><p>منصة إدارة النشاط المدرسي والشراكات والشواهد | 1448هـ</p></header>
 <main class="wrap">
@@ -98,7 +110,7 @@
 
 <section id="archive" class="view"><div class="panel"><div class="section-head"><h2>🗄️ الأرشيف الإلكتروني</h2><div class="actions no-print"><button class="btn" onclick="loadArchive()">تحديث</button></div></div><p class="muted">محمي برمز رائدة النشاط أو دخول مدير النظام. لا يظهر محتواه لغير المصرح لهم.</p><div id="archiveRecords"></div></div></section>
 
-<section id="magazine" class="view"><div class="mag-cover"><small>الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</small><h1>مجلة النشاط الطلابي الإلكترونية</h1><h2 id="coverTitle">أخبار وإنجازات المدرسة</h2><p id="coverInfo">العدد الأسبوعي</p></div><div class="panel"><div class="section-head"><h2>📰 العدد المنشور</h2><div class="actions no-print"><button class="btn" onclick="loadMagazine()">تحديث</button><button class="btn gray" onclick="shareMagazine()">مشاركة الرابط</button><button class="btn gold" onclick="printView('magazine')">طباعة / PDF</button></div></div><div class="row"><div><label>اختيار العدد</label><select id="issueSelect"></select></div><div><label>بحث</label><input id="magSearch" placeholder="ابحثي في الأخبار"></div><div><label>QR للعدد</label><img id="issueQr" class="qr" alt="رمز QR"></div></div><div id="stories"></div><p id="magMsg" class="muted"></p></div><div class="panel hidden" id="magAdminPanel"><div class="section-head"><h2>🛠️ إدارة وتحرير المجلة</h2><button class="btn" onclick="loadMagazineEditor()">تحديث لوحة التحرير</button></div><div class="row"><div><label>بداية الأسبوع</label><input id="newIssueWeek" type="date"></div><div><label>العام الدراسي</label><input id="newIssueYear" value="1448هـ"></div></div><button class="btn" onclick="createIssue()">إنشاء/فتح عدد الأسبوع</button><div id="issueAdmin"></div><div id="magSuggestions"></div><div id="magArticles"></div></div></section>
+<section id="magazine" class="view"><div class="mag-cover"><small>الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</small><h1>مجلة النشاط الطلابي الإلكترونية</h1><h2 id="coverTitle">أخبار وإنجازات المدرسة</h2><p id="coverInfo">العدد الأسبوعي</p><div id="coverPhotoWrap" class="mag-cover-photo hidden"><img id="coverPhoto" alt="صورة الخبر الرئيسي"><div id="coverPhotoCaption" class="cap"></div></div></div><div class="panel"><div class="section-head"><h2>📰 العدد المنشور</h2><div class="actions no-print"><button class="btn" onclick="loadMagazine()">تحديث</button><button class="btn gray" onclick="shareMagazine()">مشاركة الرابط</button><button class="btn gold" onclick="printView('magazine')">طباعة / PDF</button></div></div><div class="row"><div><label>اختيار العدد</label><select id="issueSelect"></select></div><div><label>بحث</label><input id="magSearch" placeholder="ابحثي في الأخبار"></div><div><label>QR للعدد</label><img id="issueQr" class="qr" alt="رمز QR"></div></div><div id="stories"></div><p id="magMsg" class="muted"></p></div><div class="panel hidden" id="magAdminPanel"><div class="section-head"><h2>🛠️ إدارة وتحرير المجلة</h2><button class="btn" onclick="loadMagazineEditor()">تحديث لوحة التحرير</button></div><div class="mag-help"><b>طريقة المجلة الآن:</b> البرامج والتقارير والمشاركات تضاف تلقائيًا كأخبار. «منشور» يعني ظاهر للزوار، و«مخفي» يعني لا يظهر. اختيار «خبر رئيسي للغلاف» يضع عنوان الخبر وصورته على الغلاف عند توفر صورة.</div><div class="row"><div><label>بداية الأسبوع</label><input id="newIssueWeek" type="date"></div><div><label>العام الدراسي</label><input id="newIssueYear" value="1448هـ"></div></div><button class="btn" onclick="createIssue()">إنشاء/فتح عدد الأسبوع</button><div id="issueAdmin"></div><div id="magSuggestions"></div><div id="magArticles"></div></div></section>
 
 <footer class="panel muted" style="text-align:center">شراكة وأثر | الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر | 1448هـ</footer>
 </main>
@@ -165,7 +177,10 @@ async function deleteAnnouncement(id){
 async function refreshDashboard(){try{let d=await ops('dashboard'),a=[['البرامج',d.programs],['البرامج النشطة',d.active_programs],['تقارير التنفيذ',d.reports],['الإعلانات',d.announcements],['المشاركات',d.submissions],['المشاركات المعتمدة',d.approved]];$('dashboardWho').textContent=roleName()||'عرض مباشر';$('metrics').innerHTML=a.map(x=>`<div class="metric"><b>${x[1]??0}</b>${x[0]}</div>`).join('');$('dashMsg').className='ok';$('dashMsg').textContent='تم تحديث المؤشرات بنجاح'}catch(e){$('dashMsg').className='bad';$('dashMsg').textContent=e.message}}
 const programFields=[['domain','المجال','text'],['objectives','الهدف','textarea'],['audience','الفئة المستهدفة','text'],['start_date','تاريخ التنفيذ / البداية','date'],['beneficiaries','عدد المستفيدين','number'],['goal_percent','نسبة تحقق الهدف %','number'],['location','مكان التنفيذ','text'],['responsible_teacher','المسؤولة عن التنفيذ','text'],['description','وصف التنفيذ','textarea'],['positives','الإيجابيات','textarea'],['difficulties','الصعوبات','textarea'],['recommendations','التوصيات','textarea'],['end_date','تاريخ نهاية البرنامج','date'],['status','الحالة','programstatus']];
 function renderProgramEditor(){let h=`<form id="programForm"><h3>نموذج تقرير إنجاز برنامج</h3><div class="report-form"><div class="report-grid"><div class="report-cell span2"><label>اسم البرنامج</label><input name="title" required></div><div class="report-cell"><label>برنامج 10%</label><label style="font-weight:normal"><input style="width:auto" type="checkbox" name="is_10_percent"> نعم، يصنف ضمن برامج 10%</label></div>`;for(let [k,l,t] of programFields){let cls=['description','recommendations'].includes(k)?'report-cell span3':'report-cell',inp=t==='textarea'?`<textarea name="${k}"></textarea>`:t==='programstatus'?`<select name="${k}"><option value="planned">مخطط</option><option value="active">جارٍ التنفيذ</option><option value="completed">مكتمل</option><option value="cancelled">ملغي</option></select>`:`<input name="${k}" type="${t}">`;h+=`<div class="${cls}"><label>${l}</label>${inp}</div>`}h+=`<div class="report-cell span3"><label>رفع المرفقات والشواهد</label><input id="programFiles" type="file" accept=".jpg,.jpeg,.png,.pdf,.mp4" multiple><p class="muted">يمكن إرفاق الصور أو PDF أو فيديو MP4، بحد 10 ميجابايت للملف.</p></div></div></div><div class="actions"><button class="btn">حفظ البرنامج</button><button type="reset" class="btn light">مسح النموذج</button></div><p id="programMsg"></p></form>`;$('programEditor').innerHTML=h;$('programForm').onsubmit=async e=>{e.preventDefault();let fd=new FormData(e.target),o={kind:'programs',title:fd.get('title'),form_details:{is_10_percent:e.target.elements.is_10_percent.checked},school_year:'1448هـ'};for(let [k,,t] of programFields){let v=fd.get(k);if(t==='number'&&v!=='')v=Number(v);if(['domain','beneficiaries','goal_percent','location','positives','difficulties','recommendations'].includes(k))o.form_details[k]=v;else o[k]=v}$('programMsg').textContent='جارٍ حفظ البرنامج...';try{let d=await ops('create',o);if(d.access_token)localStorage.setItem('program_access_'+d.id,d.access_token);let files=[...$('programFiles').files],failed=[];for(const f of files){try{await evidence('upload','programs',d.id,{file:f,access_token:d.access_token||''})}catch(er){failed.push(f.name)}}$('programMsg').className=failed.length?'warn':'ok';$('programMsg').textContent=failed.length?'تم حفظ البرنامج، وتعذر رفع: '+failed.join('، '):'تم حفظ البرنامج والمرفقات بنجاح';e.target.reset();await loadPrograms();await refreshDashboard();await loadMagazine()}catch(er){$('programMsg').className='bad';$('programMsg').textContent=er.message}}}
-function programCard(x){let f=x.form_details||{},ten=f.is_10_percent?'<span class="ten-badge">10%</span>':'';return `<article class="item"><div class="section-head"><h3>${esc(x.title)} ${ten}</h3><span class="badge">${esc(x.status||'')}</span></div><div class="program-summary"><span><b>المجال:</b> ${esc(f.domain||'—')}</span><span><b>المسؤولة:</b> ${esc(x.responsible_teacher||'—')}</span><span><b>المستفيدات:</b> ${esc(f.beneficiaries||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div><p>${esc(x.description||'')}</p><div class="actions"><button class="btn gray" onclick="showEvidence('${x.id}','programs')">المرفقات</button><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea')">قياس الأثر</button><button class="btn" onclick="printProgramReport('${x.id}')">تصدير التقرير PDF</button>${canArchive()?`<button class="btn gold" onclick="archiveRecord('${x.id}','programs',loadPrograms)">أرشفة</button>`:''}</div><div id="extra-${x.id}"></div></article>`}
+function programCard(x){
+ let f=x.form_details||{},ten=f.is_10_percent?'<span class="ten-badge">10%</span>':'',own=!!programAccess(x.id),archiveBtn=(canArchive()||own)?`<button class="btn gold" onclick="archiveRecord('${x.id}','programs',loadPrograms)">أرشفة</button>`:'';
+ return `<article class="item"><div class="section-head"><h3>${esc(x.title)} ${ten}</h3><span class="badge">${esc(statusArabic(x.status))}</span></div><div class="program-summary"><span><b>المجال:</b> ${esc(f.domain||'—')}</span><span><b>المسؤولة:</b> ${esc(x.responsible_teacher||'—')}</span><span><b>المستفيدات:</b> ${esc(f.beneficiaries||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div><p>${esc(x.description||'')}</p><div class="actions"><button class="btn gray" onclick="showEvidence('${x.id}','programs')">المرفقات</button><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea',true)">قياس الأثر</button><button class="btn" onclick="printProgramReport('${x.id}')">تصدير PDF رسمي</button>${archiveBtn}</div><div id="extra-${x.id}"></div></article>`;
+}
 async function loadPrograms(){renderProgramEditor();$('programRecords').innerHTML='<p>جارٍ التحميل...</p>';try{let d=await ops('list',{kind:'programs'}),items=d.items||[];programCache=Object.fromEntries(items.map(x=>[x.id,x]));$('programRecords').innerHTML=items.length?items.map(programCard).join(''):'<p class="empty">لا توجد برامج.</p>'}catch(e){$('programRecords').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}}
 function programAccess(id){return localStorage.getItem('program_access_'+id)||''}
 async function evidence(action,kind,id,extra={}){let fd=new FormData();fd.set('action',action);fd.set('kind',kind);fd.set('owner_id',id);let access=extra.access_token||programAccess(id);if(access)fd.set('access_token',access);Object.entries(extra).forEach(([k,v])=>{if(k!=='access_token'&&v!=null)fd.set(k,v)});let headers={};if(auth.mode==='admin')headers.Authorization='Bearer '+auth.bearer;else if(auth.token)fd.set('token',auth.token);let r;try{r=await fetch(EP.evidence,{method:'POST',headers,body:fd})}catch(e){throw Error(friendlyNetworkError(e))}let d;try{d=await r.json()}catch{throw Error('استجابة غير صالحة من خدمة المرفقات')}if(!r.ok)throw Error(d.error||'تعذر التعامل مع المرفقات');return d}
@@ -217,6 +232,220 @@ function articleEditor(a,issues){return `<form class="item" onsubmit="saveArticl
 async function createMagDraft(k,id){try{await magCall('create_draft',{source_kind:k,source_id:id});loadMagazineEditor()}catch(e){alert(e.message)}}
 async function saveArticle(ev,id){ev.preventDefault();let f=ev.target,fd=new FormData(f),o={id,title:fd.get('title'),summary:fd.get('summary'),category:fd.get('category'),issue_id:fd.get('issue_id'),status:fd.get('status'),consent_confirmed:f.elements.consent_confirmed.checked,featured:f.elements.featured.checked};try{await magCall('save_article',o);loadMagazineEditor();loadMagazine()}catch(e){alert(e.message)}}
 async function createIssue(){let week=$('newIssueWeek').value;if(!week)return alert('اختاري بداية الأسبوع');try{await magCall('create_issue',{week_start:week,school_year:$('newIssueYear').value||'1448هـ'});loadMagazineEditor();loadMagazine()}catch(e){alert(e.message)}}async function setIssue(id,status){try{await magCall('set_issue',{id,status});loadMagazineEditor();loadMagazine()}catch(e){alert(e.message)}}
+
+function notify(msg,type='ok'){
+ const el=$('appToast'); if(!el){alert(msg);return}
+ el.className=type; el.textContent=msg;
+ clearTimeout(notify._t); notify._t=setTimeout(()=>{el.className='';el.style.display='none'},3200);
+ el.style.display='block';
+}
+
+async function archiveRecord(id,kind,refresh){
+ if(!confirm('هل تريدين نقل هذا السجل إلى الأرشيف؟'))return;
+ try{
+   const payload={kind,id,archived:true};
+   if(kind==='programs'){
+     const access=programAccess(id); if(access)payload.access_token=access;
+   }
+   await arc('set_archive',payload);
+   notify('تمت أرشفة السجل بنجاح');
+   if(typeof refresh==='function')await refresh();
+   await refreshDashboard();
+ }catch(e){notify(e.message,'bad')}
+}
+
+async function loadArchive(){
+ if(!$('archiveRecords'))return;
+ if(!canArchive()){
+   $('archiveRecords').innerHTML='<p class="warn">الأرشيف الكامل متاح لمدير النظام ورائدة النشاط فقط. تستطيع المعلمة أرشفة البرنامج الذي أنشأته من بطاقة البرنامج نفسها.</p>';
+   return;
+ }
+ $('archiveRecords').innerHTML='<p>جارٍ تحميل الأرشيف...</p>';
+ try{
+   const [p,r]=await Promise.all([arc('list',{kind:'programs'}),arc('list',{kind:'reports'})]);
+   const programs=(p.items||[]).filter(x=>x.archived_at&&!x.deleted_at);
+   const reports=(r.items||[]).filter(x=>x.archived_at&&!x.deleted_at);
+   const cards=[
+    ...programs.map(x=>`<article class="item"><h3>📋 ${esc(x.title)}</h3><p class="muted">برنامج مؤرشف ${x.archived_at?'| '+new Date(x.archived_at).toLocaleDateString('ar-SA'):''}</p><div class="actions"><button class="btn" onclick="restoreArchived('${x.id}','programs')">استعادة</button><button class="btn danger" onclick="deleteArchived('${x.id}','programs')">حذف نهائي</button></div></article>`),
+    ...reports.map(x=>`<article class="item"><h3>📝 ${esc(x.title)}</h3><p class="muted">تقرير مؤرشف ${x.archived_at?'| '+new Date(x.archived_at).toLocaleDateString('ar-SA'):''}</p><div class="actions"><button class="btn" onclick="restoreArchived('${x.id}','reports')">استعادة</button><button class="btn danger" onclick="deleteArchived('${x.id}','reports')">حذف نهائي</button></div></article>`)
+   ];
+   $('archiveRecords').innerHTML=cards.length?cards.join(''):'<p class="empty">لا توجد سجلات مؤرشفة حاليًا.</p>';
+ }catch(e){$('archiveRecords').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
+}
+async function restoreArchived(id,kind){
+ try{await arc('set_archive',{kind,id,archived:false});notify('تمت استعادة السجل');await loadArchive();await refreshDashboard()}catch(e){notify(e.message,'bad')}
+}
+async function deleteArchived(id,kind){
+ if(!confirm('حذف السجل نهائيًا؟'))return;
+ try{await arc('delete_record',{kind,id});notify('تم حذف السجل');await loadArchive();await refreshDashboard()}catch(e){notify(e.message,'bad')}
+}
+
+const impactEvaluation=[
+ ['goal_clarity','وضوح أهداف البرنامج'],['operational_link','ارتباط البرنامج بالخطة التشغيلية'],
+ ['preparation','جودة الإعداد المسبق والتجهيز'],['team_commitment','التزام الفريق المنفذ بالمهام'],
+ ['content_quality','جودة المادة العلمية / المحتوى'],['participation','التفاعل والمشاركة من الحضور']
+];
+const impactField=[
+ ['timeline','وجود خطة تنفيذية زمنية واضحة'],['roles','توزيع الأدوار بشكل منظم'],
+ ['documentation','توثيق البرنامج بالصور / الفيديو'],['participant_tools','استخدام أدوات تقييم المشاركين'],
+ ['final_report','إعداد تقرير ختامي للبرنامج']
+];
+const impactOutcomes=[
+ ['awareness','رفع مستوى الوعي أو المهارة','ملاحظة مباشرة'],
+ ['behavior','تحسن في سلوك أو أداء المشاركين','ملاحظة السلوك/الأداء'],
+ ['application','تطبيق مخرجات البرنامج في الواقع','منتج أو تطبيق عملي'],
+ ['goals','تحقيق أهداف البرنامج المعلنة','مؤشرات الإنجاز']
+];
+
+async function loadImpactPrograms(){
+ if(!$('impactPrograms'))return;
+ $('impactPrograms').innerHTML='<p>جارٍ تحميل البرامج...</p>';
+ try{
+   let d=await ops('list',{kind:'programs'}),items=d.items||[];
+   programCache=Object.fromEntries(items.map(x=>[x.id,x]));
+   $('impactPrograms').innerHTML=items.length?items.map(x=>`<div class="item"><div class="section-head"><div><b>${esc(x.title)}</b>${x.form_details?.is_10_percent?'<span class="ten-badge">10%</span>':''}</div><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea',false)">فتح الاستمارة</button></div></div>`).join(''):'<p class="empty">لا توجد برامج مسجلة.</p>';
+ }catch(e){$('impactPrograms').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
+}
+async function openImpact(id,target='impactFormArea',announce=false){
+ let x=programCache[id];
+ if(!x){
+   try{let d=await ops('list',{kind:'programs'});x=(d.items||[]).find(v=>v.id===id);if(x)programCache[id]=x}catch{}
+ }
+ if(!x){notify('تعذر العثور على البرنامج','bad');return}
+ showView('impact');
+ let saved={};
+ try{let d=await arc('impact_read',{program_id:id});saved=d.assessment||{}}catch{}
+ const f=x.form_details||{},box=$(target)||$('impactFormArea');
+ const evalRows=impactEvaluation.map(([k,l])=>{let z=saved.evaluation?.[k]||{};return `<tr><td>${l}</td><td><select name="eval_${k}">${['ممتاز','جيد','مقبول','ضعيف'].map(v=>`<option ${z.rating===v?'selected':''}>${v}</option>`).join('')}</select></td><td><textarea name="eval_${k}_note">${esc(z.note||'')}</textarea></td></tr>`}).join('');
+ const fieldRows=impactField.map(([k,l])=>{let z=saved.field_monitoring?.[k]||{};return `<tr><td>${l}</td><td><select name="field_${k}"><option ${z.value==='نعم'?'selected':''}>نعم</option><option ${z.value==='لا'?'selected':''}>لا</option></select></td><td><textarea name="field_${k}_note">${esc(z.note||'')}</textarea></td></tr>`}).join('');
+ const outcomeRows=impactOutcomes.map(([k,l,e])=>{let z=saved.outcomes?.[k]||{};return `<tr><td>${l}</td><td><input name="impact_${k}_percent" type="number" min="0" max="100" value="${esc(z.percent??'')}" placeholder="%"></td><td><textarea name="impact_${k}_evidence">${esc(z.evidence||e)}</textarea></td></tr>`}).join('');
+ box.innerHTML=`<form id="impactAssessmentForm" class="panel"><div class="section-head"><h3>استمارة تقييم وتطوير ومتابعة وقياس أثر البرنامج</h3><span class="badge">${esc(x.title)}</span></div>
+ <div class="row"><div><label>اسم البرنامج</label><input name="program_name" value="${esc(saved.program_name||x.title)}" readonly></div><div><label>تاريخ التنفيذ</label><input name="execution_date" type="date" value="${esc(saved.execution_date||x.start_date||'')}"></div><div><label>الجهة/المعلمة المنفذة</label><input name="executing_entity" value="${esc(saved.executing_entity||x.responsible_teacher||'')}"></div><div><label>الفئة المستهدفة</label><input name="target_audience" value="${esc(saved.target_audience||x.audience||'')}"></div><div><label>عدد الحضور</label><input name="attendance" type="number" value="${esc(saved.attendance??f.beneficiaries??'')}"></div></div>
+ <div class="impact-section"><h4>أولًا: تقييم التخطيط والتنفيذ</h4><div class="table-wrap"><table class="impact-table"><thead><tr><th>العنصر</th><th>التقدير</th><th>ملاحظات</th></tr></thead><tbody>${evalRows}</tbody></table></div></div>
+ <div class="impact-section"><h4>ثانيًا: المتابعة الميدانية</h4><div class="table-wrap"><table class="impact-table"><thead><tr><th>المؤشر</th><th>التحقق</th><th>ملاحظات</th></tr></thead><tbody>${fieldRows}</tbody></table></div></div>
+ <div class="row"><div><label>أبرز نقاط القوة</label><textarea name="strengths">${esc(saved.strengths||'')}</textarea></div><div><label>الجوانب التي تحتاج تطوير</label><textarea name="development">${esc(saved.development||'')}</textarea></div></div>
+ <div class="impact-section"><h4>ثالثًا: قياس الأثر</h4><div class="table-wrap"><table class="impact-table"><thead><tr><th>مؤشر الأثر</th><th>نسبة التحقق</th><th>الأدلة والشواهد</th></tr></thead><tbody>${outcomeRows}</tbody></table></div></div>
+ <label>ملاحظات ختامية</label><textarea name="overall_notes">${esc(saved.overall_notes||'')}</textarea>
+ <div class="actions no-print"><button class="btn" type="button" onclick="saveImpactAssessment('${id}')">حفظ قياس الأثر</button><button class="btn gray" type="button" onclick="printImpactAssessment('${id}')">تصدير PDF</button></div><p id="impactSaveMsg"></p></form>`;
+ if(announce)notify('تمت إضافة البرنامج إلى قياس الأثر بنجاح');
+ setTimeout(()=>box.scrollIntoView({behavior:'smooth',block:'start'}),80);
+}
+async function saveImpactAssessment(id){
+ const form=$('impactAssessmentForm');if(!form)return;
+ const fd=new FormData(form),assessment={
+  program_name:fd.get('program_name'),execution_date:fd.get('execution_date'),executing_entity:fd.get('executing_entity'),
+  target_audience:fd.get('target_audience'),attendance:fd.get('attendance')?Number(fd.get('attendance')):null,
+  evaluation:{},field_monitoring:{},strengths:fd.get('strengths'),development:fd.get('development'),outcomes:{},overall_notes:fd.get('overall_notes')
+ };
+ for(const [k] of impactEvaluation)assessment.evaluation[k]={rating:fd.get('eval_'+k),note:fd.get('eval_'+k+'_note')};
+ for(const [k] of impactField)assessment.field_monitoring[k]={value:fd.get('field_'+k),note:fd.get('field_'+k+'_note')};
+ for(const [k] of impactOutcomes)assessment.outcomes[k]={percent:fd.get('impact_'+k+'_percent')?Number(fd.get('impact_'+k+'_percent')):null,evidence:fd.get('impact_'+k+'_evidence')};
+ const msg=$('impactSaveMsg');msg.textContent='جارٍ الحفظ...';
+ try{
+   await arc('impact_save',{program_id:id,assessment,access_token:programAccess(id)});
+   msg.className='ok';msg.textContent='تم حفظ قياس الأثر بنجاح';
+   notify('تم حفظ قياس الأثر بنجاح');
+ }catch(e){msg.className='bad';msg.textContent=e.message;notify(e.message,'bad')}
+}
+function printImpactAssessment(id){
+ const f=$('impactAssessmentForm'); if(!f)return;
+ officialPrintWindow('قياس أثر برنامج', programCache[id]?.title||'برنامج نشاط', f.innerHTML, {rawHtml:true});
+}
+
+async function loadSubmissions(){
+ if(!$('submissionRecords'))return;
+ $('submissionRecords').innerHTML='<p>جارٍ تحميل المشاركات...</p>';
+ try{
+   if(!auth.mode){
+     let d=await jsonPost(EP.staff,{action:'public_list'},false),items=d.items||[];
+     $('submissionRecords').innerHTML=items.length?items.map(x=>`<article class="item"><h3>${esc(x.title)}</h3><p><span class="badge">${esc(x.category||'مشاركة')}</span> <span class="muted">${esc(x.status||'pending')}</span></p></article>`).join(''):'<p class="empty">لا توجد مشاركات.</p>';
+     return;
+   }
+   let d=await jsonPost(EP.staff,{action:'list',token:auth.token},false),items=d.items||[];
+   $('submissionRecords').innerHTML=items.length?items.map(x=>`<article class="item"><div class="section-head"><div><h3>${esc(x.title)}</h3><p class="muted">${esc(x.submitter_name||'')} | ${esc(x.category||'')}</p></div><span class="badge">${esc(x.status||'pending')}</span></div><p>${esc(x.description||'')}</p>${auth.role==='activity_leader'?`<div class="actions"><button class="btn" onclick="reviewSub('${x.id}','approved')">اعتماد</button><button class="btn danger" onclick="reviewSub('${x.id}','rejected')">رفض</button></div>`:''}</article>`).join(''):'<p class="empty">لا توجد مشاركات.</p>';
+ }catch(e){$('submissionRecords').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
+}
+
+function officialPrintWindow(docTitle,subTitle,content,opts={}){
+ const w=window.open('','_blank');if(!w){alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');return null}
+ const body=opts.rawHtml?content:`<div class="doc-content">${content}</div>`;
+ const html=`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(docTitle)} - ${esc(subTitle||'')}</title><style>
+ @page{size:A4;margin:12mm}
+ *{box-sizing:border-box}html{background:#e9efed}body{margin:0;font-family:Tahoma,Arial,sans-serif;color:#173f4c;background:#e9efed;line-height:1.75;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ .page{width:210mm;min-height:297mm;margin:8mm auto;background:#fff;box-shadow:0 8px 24px #0002;padding:13mm 14mm 16mm;position:relative}
+ .letterhead{border-top:8px solid #14566a;border-bottom:2px solid #b18f42;padding:6mm 0 5mm;text-align:center;margin-bottom:8mm}
+ .ksa{font-size:12px;color:#60777e}.school{font-size:15px;font-weight:700}.letterhead h1{font-size:27px;margin:4px 0;color:#14566a}.letterhead h2{font-size:19px;margin:0;color:#2e5965}
+ .doc-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:7mm}.meta-card{border:1px solid #cddbd7;border-radius:8px;padding:8px 10px;background:#f8fbfa}.meta-card b{display:block;color:#14566a;font-size:12px}
+ .sec{margin:5mm 0;border:1px solid #ccd9d6;border-radius:8px;overflow:hidden;break-inside:avoid}.sec h3{margin:0;background:#14566a;color:#fff;padding:7px 10px;font-size:15px}.sec .txt{padding:10px;white-space:pre-wrap;min-height:18mm}
+ .data-grid{display:grid;grid-template-columns:140px 1fr;border-top:1px solid #d6e2de;border-right:1px solid #d6e2de}.data-grid .k,.data-grid .v{padding:8px 10px;border-left:1px solid #d6e2de;border-bottom:1px solid #d6e2de}.data-grid .k{font-weight:700;background:#edf4f2;color:#14566a}
+ .evidence-title{margin-top:8mm;border-bottom:2px solid #b18f42;padding-bottom:4px}.evidence-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:5mm}.ev{border:1px solid #d6e2de;border-radius:8px;padding:6px;break-inside:avoid;text-align:center}.ev img{width:100%;height:92mm;object-fit:contain;background:#fafafa}.ev .cap{font-size:11px;color:#61757c;margin-top:4px}
+ .signatures{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13mm;text-align:center;font-weight:700}.sig{border-top:1px solid #9fb1ad;padding-top:6px}
+ .footer{position:absolute;bottom:6mm;right:14mm;left:14mm;border-top:1px solid #d6e2de;padding-top:4px;font-size:10px;color:#71858a;display:flex;justify-content:space-between}
+ .impact-section,.report-form,.report-grid,.table-wrap{break-inside:avoid}table{width:100%;border-collapse:collapse;font-size:11px}th,td{border:1px solid #cbd8d4;padding:5px}th{background:#edf4f2}.no-print,.actions,button{display:none!important}input,textarea,select{border:0!important;background:transparent!important;width:100%;font:inherit;color:#173f4c}textarea{min-height:45px}
+ @media print{html,body{background:#fff}.page{width:auto;min-height:auto;margin:0;box-shadow:none;padding:0}.footer{position:fixed;bottom:0;right:0;left:0}}
+ </style></head><body><div class="page"><div class="letterhead"><div class="ksa">المملكة العربية السعودية · وزارة التعليم</div><div class="school">الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><h1>${esc(docTitle)}</h1><h2>${esc(subTitle||'')}</h2><div class="ksa">العام الدراسي 1448هـ</div></div>${body}<div class="signatures"><div class="sig">منفذة البرنامج / التقرير</div><div class="sig">رائدة النشاط</div><div class="sig">مديرة المدرسة: شعاع العنزي</div></div><div class="footer"><span>منصة شراكة وأثر</span><span>1448هـ</span></div></div><script>setTimeout(()=>{window.focus();window.print()},700)<\/script></body></html>`;
+ w.document.open();w.document.write(html);w.document.close();return w;
+}
+
+async function printProgramReport(id){
+ const x=programCache[id];if(!x)return alert('تعذر العثور على البرنامج');
+ let f=x.form_details||{},files=[],images=[];
+ try{
+   let d=await evidence('list','programs',id);files=d.items||[];
+   for(const it of files){if(String(it.mime_type||'').startsWith('image/')){try{let o=await evidence('open','programs',id,{file_id:it.id});images.push({name:it.original_name,url:o.url})}catch{}}}
+ }catch{}
+ const basics=[
+  ['اسم البرنامج',x.title],['المجال',f.domain],['برنامج 10%',f.is_10_percent?'نعم':'لا'],['الهدف',x.objectives],
+  ['الفئة المستهدفة',x.audience],['تاريخ التنفيذ',x.start_date],['تاريخ نهاية البرنامج',x.end_date],
+  ['عدد المستفيدين',f.beneficiaries],['نسبة تحقق الهدف',f.goal_percent?f.goal_percent+'%':'—'],['مكان التنفيذ',f.location],
+  ['المسؤولة عن التنفيذ',x.responsible_teacher],['حالة البرنامج',statusArabic(x.status)]
+ ];
+ const main=`<div class="doc-meta"><div class="meta-card"><b>نوع الوثيقة</b>تقرير إنجاز برنامج نشاط طلابي</div><div class="meta-card"><b>حالة البرنامج</b>${esc(statusArabic(x.status))}</div></div>
+ <div class="data-grid">${basics.map(r=>`<div class="k">${esc(r[0])}</div><div class="v">${esc(r[1]||'—')}</div>`).join('')}</div>
+ <div class="sec"><h3>وصف التنفيذ</h3><div class="txt">${esc(x.description||'—')}</div></div>
+ <div class="sec"><h3>الإيجابيات</h3><div class="txt">${esc(f.positives||'—')}</div></div>
+ <div class="sec"><h3>الصعوبات</h3><div class="txt">${esc(f.difficulties||'—')}</div></div>
+ <div class="sec"><h3>التوصيات</h3><div class="txt">${esc(f.recommendations||'—')}</div></div>
+ <h3 class="evidence-title">المرفقات والشواهد</h3><div>${files.length?files.map(z=>`<span class="file-chip">${esc(z.original_name)}</span>`).join(''):'لا توجد مرفقات.'}</div>
+ ${images.length?`<div class="evidence-grid">${images.map(z=>`<div class="ev"><img src="${z.url}"><div class="cap">${esc(z.name)}</div></div>`).join('')}</div>`:''}`;
+ officialPrintWindow('تقرير إنجاز برنامج',x.title,main);
+}
+function printReportDraft(){
+ const f=$('reportForm');if(!f)return;const fd=new FormData(f),title=String(fd.get('title')||'').trim()||'تقرير تنفيذ نشاط';
+ const main=`<div class="doc-meta"><div class="meta-card"><b>تاريخ التقرير</b>${esc(fd.get('report_date')||'—')}</div><div class="meta-card"><b>عدد المستفيدات</b>${esc(fd.get('attendees')||'—')}</div></div>
+ <div class="sec"><h3>ملخص التنفيذ</h3><div class="txt">${esc(fd.get('summary')||'—')}</div></div>
+ <div class="sec"><h3>النتائج والمخرجات</h3><div class="txt">${esc(fd.get('outcomes')||'—')}</div></div>
+ <div class="sec"><h3>التحديات</h3><div class="txt">${esc(fd.get('challenges')||'—')}</div></div>
+ <div class="sec"><h3>خطة التحسين</h3><div class="txt">${esc(fd.get('improvement_plan')||'—')}</div></div>`;
+ officialPrintWindow('تقرير تنفيذ نشاط',title,main);
+}
+function printExecutionReport(id){
+ const x=reportCache[id];if(!x)return alert('تعذر العثور على التقرير');
+ const main=`<div class="doc-meta"><div class="meta-card"><b>تاريخ التقرير</b>${esc(x.report_date||'—')}</div><div class="meta-card"><b>عدد المستفيدات</b>${esc(x.attendees??'—')}</div></div>
+ <div class="sec"><h3>ملخص التنفيذ</h3><div class="txt">${esc(x.summary||'—')}</div></div>
+ <div class="sec"><h3>النتائج والمخرجات</h3><div class="txt">${esc(x.outcomes||'—')}</div></div>
+ <div class="sec"><h3>التحديات</h3><div class="txt">${esc(x.challenges||'—')}</div></div>
+ <div class="sec"><h3>خطة التحسين</h3><div class="txt">${esc(x.improvement_plan||'—')}</div></div>`;
+ officialPrintWindow('تقرير تنفيذ نشاط',x.title,main);
+}
+
+function renderMagazine(){
+ const id=$('issueSelect').value||magData.issues?.[0]?.id,q=$('magSearch').value.trim();
+ const issue=magData.issues?.find(x=>x.id===id);
+ const news=(magData.articles||[]).filter(a=>a.issue_id===id&&(!q||(String(a.title)+String(a.summary)).includes(q)));
+ const featured=news.find(x=>x.featured&&x.cover_image_url)||news.find(x=>x.cover_image_url)||news.find(x=>x.featured)||news[0];
+ const photoArticle=featured?.cover_image_url?featured:null;
+ $('coverInfo').textContent=issue?'العدد '+issue.issue_number+' | '+issue.week_start:'لا يوجد عدد منشور';
+ $('coverTitle').textContent=featured?.title||'أخبار وإنجازات المدرسة';
+ const wrap=$('coverPhotoWrap');
+ if(photoArticle?.cover_image_url){wrap.classList.remove('hidden');$('coverPhoto').src=photoArticle.cover_image_url;$('coverPhotoCaption').textContent=photoArticle.title}else{wrap.classList.add('hidden');$('coverPhoto').removeAttribute('src');$('coverPhotoCaption').textContent=''}
+ $('stories').innerHTML=news.length?news.map(a=>`<article class="story-card ${a.cover_image_url?'':'no-photo'}">${a.cover_image_url?`<img src="${a.cover_image_url}" alt="">`:''}<div><small>${esc(a.category||'أخبار النشاط')}</small><h2>${esc(a.title)}</h2><p>${esc(a.summary||'')}</p></div></article>`).join(''):'<p class="empty">لا توجد أخبار منشورة في هذا العدد.</p>';
+ let url=location.href.split('#')[0]+'#magazine';$('issueQr').src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='+encodeURIComponent(url);
+}
+function articleEditor(a,issues){
+ return `<form class="item" onsubmit="saveArticle(event,'${a.id}')"><label>العنوان</label><input name="title" value="${esc(a.title)}"><label>الملخص الصحفي</label><textarea name="summary">${esc(a.summary)}</textarea><div class="row"><div><label>التصنيف</label><input name="category" value="${esc(a.category)}"></div><div><label>العدد</label><select name="issue_id"><option value="">بدون عدد</option>${issues.map(i=>`<option value="${i.id}" ${a.issue_id===i.id?'selected':''}>العدد ${i.issue_number} - ${i.week_start}</option>`).join('')}</select></div><div><label>الظهور في المجلة</label><select name="status"><option value="published" ${a.status==='published'?'selected':''}>منشور - ظاهر للزوار</option><option value="draft" ${a.status!=='published'?'selected':''}>مخفي مؤقتًا</option></select></div></div><div class="actions"><label style="font-weight:normal"><input style="width:auto" type="checkbox" name="consent_confirmed" ${a.consent_confirmed?'checked':''}> السماح بإظهار صورة الخبر عند توفرها</label><label style="font-weight:normal"><input style="width:auto" type="checkbox" name="featured" ${a.featured?'checked':''}> خبر رئيسي للغلاف</label><button class="btn">حفظ</button></div></form>`;
+}
+
 loadStaticPlanning();updateAuthUI();checkServer();loadAnnouncements();loadPlanServer();loadFollowups();loadMagazine();let initial=location.hash.replace('#','');if(initial&&document.getElementById(initial))showView(initial);
 </script>
 </body></html>
