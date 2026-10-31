@@ -92,7 +92,7 @@
   <a class="card service" data-go="magazine" href="#magazine"><span><b>📰</b>مجلة النشاط الطلابي</span></a>
   <button type="button" class="card service" onclick="showView('access');showLogin('admin')"><span><b>🛡️</b>مدير النظام</span></button>
   <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showPinRole('activity_leader')"><span><b>📋</b>رائدة النشاط</span></a>
-  <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showPinRole('teacher')"><span><b>👩‍🏫</b>دخول المعلمات</span></a>
+  <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showTeacherLogin()"><span><b>👩‍🏫</b>دخول المعلمات</span></a>
   <a class="card service" href="#access" onclick="event.preventDefault();showView('access');showPinRole('principal')"><span><b>🏫</b>إدارة المدرسة</span></a>
  </div>
 </section>
@@ -157,7 +157,7 @@
 </div>
 </div></section>
 
-<section id="access" class="view"><div class="panel loginbox" id="loginPanel"><h2>🔐 دخول الإدارة والصلاحيات</h2><p class="muted">الواجهة العامة مخصصة للطالبات وأولياء الأمور والزوار. تستخدم المعلمات ورائدة النشاط والإدارة الدخول المخصص لإظهار أدوات العمل المناسبة لكل دور.</p><div class="role-cards"><div class="role-card"><b>🛡️</b><h3>مدير النظام</h3><button class="btn alt" onclick="showLogin('admin')">دخول مدير النظام</button></div><div class="role-card"><b>📋</b><h3>رائدة النشاط</h3><button class="btn" onclick="showPinRole('activity_leader')">الدخول بالرمز</button></div><div class="role-card"><b>👩‍🏫</b><h3>المعلمات</h3><button class="btn" onclick="showPinRole('teacher')">دخول المعلمات</button></div><div class="role-card"><b>🏫</b><h3>إدارة المدرسة</h3><button class="btn gold" onclick="showPinRole('principal')">الدخول بالرمز</button></div></div><div id="pinLogin" class="hidden"><input id="pinRole" type="hidden" value="activity_leader"><label id="pinRoleLabel">الرمز السري</label><input id="pinCode" type="password" inputmode="numeric" maxlength="16"><button class="btn" onclick="pinLogin()">دخول</button></div><div id="adminLoginBox" class="hidden"><p class="permission-note">دخول مدير النظام يستخدم حساب الإدارة المخصص للمنصة.</p><label>البريد الإلكتروني</label><input id="adminEmail" type="email"><label>كلمة المرور</label><input id="adminPass" type="password"><button class="btn alt" onclick="doAdminLogin()">دخول مدير النظام</button></div><p id="loginMsg"></p></div><div class="panel hidden" id="loggedBox"><div class="actions"><span id="who" class="badge"></span><button class="btn gray" onclick="logout()">تسجيل خروج</button></div><p>تم تفعيل الصلاحيات الخاصة بهذا الدور.</p><div id="teacherPinSetup" class="hidden"><hr><h3>🔐 تعيين رمز دخول المعلمات</h3><p class="muted">يحدده مدير النظام فقط. يجب أن يكون من 8 إلى 16 رقمًا ويمكن تغييره لاحقًا.</p><div class="row"><div><label>الرمز الجديد للمعلمات</label><input id="teacherPinNew" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"></div><div style="align-self:end"><button class="btn" onclick="setTeacherPin()">حفظ رمز المعلمات</button></div></div><p id="teacherPinMsg"></p></div></div></section>
+<section id="access" class="view"><div class="panel loginbox" id="loginPanel"><h2>🔐 دخول الإدارة والصلاحيات</h2><p class="muted">الواجهة العامة مخصصة للطالبات وأولياء الأمور والزوار. تدخل كل معلمة باسمها ورمزها الشخصي لتظهر لها برامجها وتقاريرها وأرشيفها فقط.</p><div class="role-cards"><div class="role-card"><b>🛡️</b><h3>مدير النظام</h3><button class="btn alt" onclick="showLogin('admin')">دخول مدير النظام</button></div><div class="role-card"><b>📋</b><h3>رائدة النشاط</h3><button class="btn" onclick="showPinRole('activity_leader')">الدخول بالرمز</button></div><div class="role-card"><b>👩‍🏫</b><h3>المعلمات</h3><button class="btn" onclick="showTeacherLogin()">دخول المعلمات</button></div><div class="role-card"><b>🏫</b><h3>إدارة المدرسة</h3><button class="btn gold" onclick="showPinRole('principal')">الدخول بالرمز</button></div></div><div id="pinLogin" class="hidden"><input id="pinRole" type="hidden" value="activity_leader"><label id="pinRoleLabel">الرمز السري</label><input id="pinCode" type="password" inputmode="numeric" maxlength="16"><button class="btn" onclick="pinLogin()">دخول</button></div><div id="teacherLoginBox" class="hidden"><label>اسم المعلمة</label><select id="teacherLoginSelect"><option value="">جارٍ تحميل الأسماء...</option></select><label>الرمز الشخصي</label><input id="teacherLoginPin" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"><button class="btn" onclick="teacherLogin()">دخول المعلمة</button><button class="btn light" type="button" onclick="loadTeacherChoices()">تحديث الأسماء</button></div><div id="adminLoginBox" class="hidden"><p class="permission-note">دخول مدير النظام يستخدم حساب الإدارة المخصص للمنصة.</p><label>البريد الإلكتروني</label><input id="adminEmail" type="email"><label>كلمة المرور</label><input id="adminPass" type="password"><button class="btn alt" onclick="doAdminLogin()">دخول مدير النظام</button></div><p id="loginMsg"></p></div><div class="panel hidden" id="loggedBox"><div class="actions"><span id="who" class="badge"></span><button class="btn gray" onclick="logout()">تسجيل خروج</button></div><p>تم تفعيل الصلاحيات الخاصة بهذا الدور.</p><div id="teacherAccountsAdmin" class="hidden"><hr><h3>👩‍🏫 إدارة حسابات المعلمات</h3><p class="muted">أضيفي اسم المعلمة وحددي لها رمزًا شخصيًا من 8 إلى 16 رقمًا. كل معلمة سترى برامجها وتقاريرها فقط.</p><div class="row"><div><label>اسم المعلمة</label><input id="newTeacherName" placeholder="مثال: مريم الظفيري"></div><div><label>الرمز الشخصي</label><input id="newTeacherPin" type="password" inputmode="numeric" maxlength="16" placeholder="8 أرقام أو أكثر"></div><div style="align-self:end"><button class="btn" onclick="addTeacherAccount()">إضافة المعلمة</button></div></div><p id="teacherAccountsMsg"></p><div id="teacherAccountsList"><p class="muted">جارٍ تحميل الحسابات...</p></div></div></div><p id="teacherPinMsg"></p></div></div></section>
 
 <section id="dashboard" class="view"><div class="panel"><div class="section-head"><h2>📊 مؤشرات الأداء</h2><div class="actions no-print"><span id="dashboardWho" class="badge"></span><button class="btn" onclick="refreshDashboard()">تحديث المؤشرات</button></div></div><div id="metrics" class="metrics"></div><p id="dashMsg"></p></div></section>
 
@@ -180,10 +180,10 @@
 <script>
 const BASE='https://iuagshmfxmfwgdwjddxc.supabase.co',KEY='sb_publishable__VC7FmqyrtAlMjar0GOnVg_-gU1VBBW';
 const EP={staff:BASE+'/functions/v1/staff-code-access',ops:BASE+'/functions/v1/school-operations',archive:BASE+'/functions/v1/school-archive',planning:BASE+'/functions/v1/school-planning',evidence:BASE+'/functions/v1/program-report-evidence',mag:BASE+'/functions/v1/school-magazine',submit:BASE+'/functions/v1/submit-school-evidence',annMedia:BASE+'/functions/v1/announcement-media',participant:BASE+'/functions/v1/participant-portal'};
-let auth={mode:sessionStorage.getItem('sa_mode')||'',role:sessionStorage.getItem('sharaka_staff_role')||'',token:sessionStorage.getItem('sharaka_staff_token')||'',bearer:sessionStorage.getItem('sa_bearer')||''},pendingView='',magData={issues:[],articles:[]},programCache={},reportCache={},followupCache=[],followCurrentId='',editingProgramId='';
+let auth={mode:sessionStorage.getItem('sa_mode')||'',role:sessionStorage.getItem('sharaka_staff_role')||'',token:sessionStorage.getItem('sharaka_staff_token')||'',bearer:sessionStorage.getItem('sa_bearer')||'',teacher_id:sessionStorage.getItem('sharaka_teacher_id')||'',teacher_name:sessionStorage.getItem('sharaka_teacher_name')||''},pendingView='',magData={issues:[],articles:[]},programCache={},reportCache={},followupCache=[],followCurrentId='',editingProgramId='';
 const $=id=>document.getElementById(id),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const restricted=new Set();
-function roleName(){return auth.mode==='admin'?'مدير النظام':auth.role==='activity_leader'?'رائدة النشاط':auth.role==='teacher'?'المعلمات':auth.role==='principal'?'إدارة المدرسة':''}
+function roleName(){return auth.mode==='admin'?'مدير النظام':auth.role==='activity_leader'?'رائدة النشاط':auth.role==='teacher'?(auth.teacher_name?'معلمة: '+auth.teacher_name:'المعلمة'):auth.role==='principal'?'إدارة المدرسة':''}
 function canEdit(){return !!auth.mode}
 function canArchive(){return auth.mode==='admin'||auth.role==='activity_leader'}
 function canPlanEdit(){return auth.mode==='admin'||auth.role==='activity_leader'}
@@ -205,7 +205,7 @@ function applyViewPermissions(){
    const id=el.dataset.go;
    el.classList.toggle('hidden',allowed!==null&&!allowed.has(id));
  });
- if($('teacherPinSetup'))$('teacherPinSetup').classList.toggle('hidden',auth.mode!=='admin');
+ if($('teacherAccountsAdmin'))$('teacherAccountsAdmin').classList.toggle('hidden',auth.mode!=='admin');
 }
 function setPlanningPermissions(){
  const edit=canPlanEdit();
@@ -226,6 +226,7 @@ function updateAuthUI(){
  $('announcementAdmin').classList.toggle('hidden',!canManageAnnouncements());
  applyViewPermissions();
  setPlanningPermissions();
+ if(auth.mode==='admin')loadTeacherAccountsAdmin();
  loadAnnouncements();
 }
 function showView(id){
@@ -257,22 +258,86 @@ document.querySelectorAll('[data-view]').forEach(b=>b.onclick=e=>{e.preventDefau
 function apiAuth(headers={},body={}){if(auth.mode==='admin')headers.Authorization='Bearer '+auth.bearer;else if(auth.token)body.token=auth.token;return [headers,body]}
 function friendlyNetworkError(e){let m=String(e?.message||e||'');if(/load failed|failed to fetch|networkerror|network request failed/i.test(m))return 'تعذر الاتصال بالخادم من هذا الملف المحلي. أغلقي الملف وافتحيه من جديد، وإذا استمرت المشكلة نستخدم رابط GitHub للاختبار الكامل.';return m||'تعذر الاتصال بالخادم'}
 async function jsonPost(url,body={},privateCall=true){let headers={'Content-Type':'application/json'};if(privateCall)[headers,body]=apiAuth(headers,body);let r;try{r=await fetch(url,{method:'POST',headers,body:JSON.stringify(body),cache:'no-store'})}catch(e){throw Error(friendlyNetworkError(e))}let d;try{d=await r.json()}catch{throw Error('استجابة غير صالحة من الخادم')}if(!r.ok)throw Error(d.error||'تعذر تنفيذ الطلب');return d}
-async function checkServer(){let el=$('serverStatus');if(!el)return;el.className='muted';el.textContent='جارٍ الفحص...';try{await jsonPost(EP.ops,{action:'dashboard'},false);el.className='ok';el.textContent='متصل بالخادم'}catch(e){el.className='bad';el.textContent=friendlyNetworkError(e)}}
-function showLogin(t){$('pinLogin').classList.toggle('hidden',t!=='pin');$('adminLoginBox').classList.toggle('hidden',t!=='admin');$('loginMsg').textContent='';}
-function showPinRole(role){$('pinRole').value=role;$('pinRoleLabel').textContent=role==='activity_leader'?'رمز رائدة النشاط':role==='teacher'?'رمز دخول المعلمات':'رمز إدارة المدرسة';showLogin('pin');$('pinCode').focus()}
-async function setTeacherPin(){
- if(auth.mode!=='admin')return notify('تعيين رمز المعلمات متاح لمدير النظام فقط','bad');
- const pin=$('teacherPinNew').value.trim(),msg=$('teacherPinMsg');
- if(!/^[0-9]{8,16}$/.test(pin)){msg.className='bad';msg.textContent='اكتبي رمزًا من 8 إلى 16 رقمًا.';return}
- msg.className='';msg.textContent='جارٍ حفظ الرمز...';
+async function checkServer(){let el=$('serverStatus');if(!el)return;el.className='muted';el.textContent='جارٍ الفحص...';try{await jsonPost(EP.staff,{action:'teacher_list'},false);el.className='ok';el.textContent='متصل بالخادم'}catch(e){el.className='bad';el.textContent=friendlyNetworkError(e)}}
+function showLogin(t){
+ $('pinLogin').classList.toggle('hidden',t!=='pin');
+ $('adminLoginBox').classList.toggle('hidden',t!=='admin');
+ if($('teacherLoginBox'))$('teacherLoginBox').classList.toggle('hidden',t!=='teacher');
+ $('loginMsg').textContent='';
+}
+function showPinRole(role){
+ $('pinRole').value=role;
+ $('pinRoleLabel').textContent=role==='activity_leader'?'رمز رائدة النشاط':'رمز إدارة المدرسة';
+ showLogin('pin');$('pinCode').focus();
+}
+async function showTeacherLogin(){
+ showLogin('teacher');
+ await loadTeacherChoices();
+ setTimeout(()=>$('teacherLoginSelect')?.focus(),50);
+}
+async function loadTeacherChoices(){
+ const sel=$('teacherLoginSelect'); if(!sel)return;
+ sel.innerHTML='<option value="">جارٍ تحميل الأسماء...</option>';
  try{
-  await jsonPost(EP.staff,{action:'setup',role:'teacher',pin},true);
-  $('teacherPinNew').value='';msg.className='ok';msg.textContent='تم حفظ رمز دخول المعلمات بنجاح.';
+  const d=await jsonPost(EP.staff,{action:'teacher_list'},false),items=d.items||[];
+  sel.innerHTML='<option value="">اختاري اسمك</option>'+items.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');
+  if(!items.length)sel.innerHTML='<option value="">لم يضف مدير النظام حسابات المعلمات بعد</option>';
+ }catch(e){sel.innerHTML='<option value="">تعذر تحميل الأسماء</option>';notify(e.message,'bad')}
+}
+async function teacherLogin(){
+ const teacher_id=$('teacherLoginSelect').value,pin=$('teacherLoginPin').value.trim();
+ $('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';
+ if(!teacher_id||!/^[0-9]{8,16}$/.test(pin)){ $('loginMsg').className='bad';$('loginMsg').textContent='اختاري اسمك واكتبي الرمز الشخصي.';return }
+ try{
+  const d=await jsonPost(EP.staff,{action:'teacher_login',teacher_id,pin},false);
+  auth={mode:'staff',role:'teacher',token:d.token,bearer:'',teacher_id:d.teacher_id||teacher_id,teacher_name:d.teacher_name||''};
+  sessionStorage.setItem('sa_mode','staff');
+  sessionStorage.setItem('sharaka_staff_role','teacher');
+  sessionStorage.setItem('sharaka_staff_token',d.token);
+  sessionStorage.setItem('sharaka_teacher_id',auth.teacher_id);
+  sessionStorage.setItem('sharaka_teacher_name',auth.teacher_name);
+  $('teacherLoginPin').value='';
+  updateAuthUI();
+  let go=pendingView||'programs';pendingView='';
+  showView(go);
+ }catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}
+}
+async function loadTeacherAccountsAdmin(){
+ if(auth.mode!=='admin'||!$('teacherAccountsList'))return;
+ $('teacherAccountsList').innerHTML='<p class="muted">جارٍ تحميل حسابات المعلمات...</p>';
+ try{
+  const d=await jsonPost(EP.staff,{action:'teacher_admin_list'},true),items=d.items||[];
+  $('teacherAccountsList').innerHTML=items.length?items.map(x=>`<div class="item"><div class="section-head"><div><b>${esc(x.name)}</b><br><span class="badge">${x.active?'نشط':'موقوف'}</span></div><div class="actions"><button class="btn light" onclick="changeTeacherPin('${x.id}','${esc(x.name)}')">تغيير الرمز</button><button class="btn ${x.active?'danger':'gold'}" onclick="toggleTeacherAccount('${x.id}',${x.active?'false':'true'})">${x.active?'إيقاف الحساب':'تفعيل الحساب'}</button></div></div></div>`).join(''):'<p class="empty">لم تتم إضافة معلمات بعد.</p>';
+ }catch(e){$('teacherAccountsList').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
+}
+async function addTeacherAccount(){
+ if(auth.mode!=='admin')return;
+ const name=$('newTeacherName').value.trim(),pin=$('newTeacherPin').value.trim(),msg=$('teacherAccountsMsg');
+ if(name.length<3||!/^[0-9]{8,16}$/.test(pin)){msg.className='bad';msg.textContent='اكتبي اسم المعلمة ورمزًا من 8 إلى 16 رقمًا.';return}
+ msg.className='';msg.textContent='جارٍ إضافة المعلمة...';
+ try{
+  await jsonPost(EP.staff,{action:'teacher_create',name,pin},true);
+  $('newTeacherName').value='';$('newTeacherPin').value='';
+  msg.className='ok';msg.textContent='تم إنشاء حساب المعلمة وربط البرامج القديمة المطابقة لاسمها إن وجدت.';
+  await loadTeacherAccountsAdmin();
  }catch(e){msg.className='bad';msg.textContent=e.message}
 }
-async function pinLogin(){let role=$('pinRole').value,pin=$('pinCode').value.trim();$('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';try{let d=await jsonPost(EP.staff,{action:'login',role,pin},false);auth={mode:'staff',role:d.role,token:d.token,bearer:''};sessionStorage.setItem('sa_mode','staff');sessionStorage.setItem('sharaka_staff_role',d.role);sessionStorage.setItem('sharaka_staff_token',d.token);$('pinCode').value='';updateAuthUI();let go=pendingView||'home';pendingView='';showView(go)}catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}}
-async function doAdminLogin(){let email=$('adminEmail').value.trim(),password=$('adminPass').value;$('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';try{let r;try{r=await fetch(BASE+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})})}catch(ne){throw Error(friendlyNetworkError(ne))}let d=await r.json();if(!r.ok||!d.access_token)throw Error('بيانات الدخول غير صحيحة');auth={mode:'admin',role:'super_admin',token:'',bearer:d.access_token};sessionStorage.setItem('sa_mode','admin');sessionStorage.setItem('sa_bearer',d.access_token);await ops('dashboard');$('adminPass').value='';updateAuthUI();let go=pendingView||'home';pendingView='';showView(go)}catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}}
-function logout(){sessionStorage.removeItem('sa_mode');sessionStorage.removeItem('sa_bearer');sessionStorage.removeItem('sharaka_staff_token');sessionStorage.removeItem('sharaka_staff_role');auth={mode:'',role:'',token:'',bearer:''};updateAuthUI();showView('home')}
+async function changeTeacherPin(id,name){
+ const pin=prompt('اكتبي الرمز الجديد للمعلمة '+name+' (من 8 إلى 16 رقمًا):','');
+ if(pin===null)return;
+ if(!/^[0-9]{8,16}$/.test(pin))return notify('الرمز يجب أن يكون من 8 إلى 16 رقمًا','warn');
+ try{await jsonPost(EP.staff,{action:'teacher_set_pin',teacher_id:id,pin},true);notify('تم تغيير رمز المعلمة بنجاح')}catch(e){notify(e.message,'bad')}
+}
+async function toggleTeacherAccount(id,active){
+ try{
+  await jsonPost(EP.staff,{action:'teacher_toggle',teacher_id:id,active},true);
+  notify(active?'تم تفعيل حساب المعلمة':'تم إيقاف حساب المعلمة');
+  await loadTeacherAccountsAdmin();
+ }catch(e){notify(e.message,'bad')}
+}
+async function pinLogin(){let role=$('pinRole').value,pin=$('pinCode').value.trim();$('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';try{let d=await jsonPost(EP.staff,{action:'login',role,pin},false);auth={mode:'staff',role:d.role,token:d.token,bearer:'',teacher_id:'',teacher_name:''};sessionStorage.setItem('sa_mode','staff');sessionStorage.setItem('sharaka_staff_role',d.role);sessionStorage.setItem('sharaka_staff_token',d.token);sessionStorage.removeItem('sharaka_teacher_id');sessionStorage.removeItem('sharaka_teacher_name');$('pinCode').value='';updateAuthUI();let go=pendingView||'home';pendingView='';showView(go)}catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}}
+async function doAdminLogin(){let email=$('adminEmail').value.trim(),password=$('adminPass').value;$('loginMsg').className='';$('loginMsg').textContent='جارٍ التحقق...';try{let r;try{r=await fetch(BASE+'/auth/v1/token?grant_type=password',{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})})}catch(ne){throw Error(friendlyNetworkError(ne))}let d=await r.json();if(!r.ok||!d.access_token)throw Error('بيانات الدخول غير صحيحة');auth={mode:'admin',role:'super_admin',token:'',bearer:d.access_token,teacher_id:'',teacher_name:''};sessionStorage.setItem('sa_mode','admin');sessionStorage.setItem('sa_bearer',d.access_token);sessionStorage.removeItem('sharaka_teacher_id');sessionStorage.removeItem('sharaka_teacher_name');await ops('dashboard');$('adminPass').value='';updateAuthUI();let go=pendingView||'home';pendingView='';showView(go)}catch(e){$('loginMsg').className='bad';$('loginMsg').textContent=e.message}}
+function logout(){sessionStorage.removeItem('sa_mode');sessionStorage.removeItem('sa_bearer');sessionStorage.removeItem('sharaka_staff_token');sessionStorage.removeItem('sharaka_staff_role');sessionStorage.removeItem('sharaka_teacher_id');sessionStorage.removeItem('sharaka_teacher_name');auth={mode:'',role:'',token:'',bearer:'',teacher_id:'',teacher_name:''};updateAuthUI();showView('home')}
 async function ops(action,extra={}){return jsonPost(EP.ops,{action,...extra})}async function arc(action,extra={}){return jsonPost(EP.archive,{action,...extra})}async function planning(action,extra={},privateCall=true){return jsonPost(EP.planning,{action,...extra},privateCall)}
 function printView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('printing'));$(id).classList.add('printing');window.print();$(id).classList.remove('printing')}
 function participantStatusArabic(s){return ({pending:'بانتظار مراجعة رائدة النشاط',approved:'معتمدة',rejected:'مرفوضة',needs_changes:'تحتاج تعديل'})[s]||s||'بانتظار المراجعة'}
@@ -398,6 +463,7 @@ function renderProgramEditor(){
  for(let [k,l,t] of programFields){let cls=['description','recommendations'].includes(k)?'report-cell span3':'report-cell',inp=t==='textarea'?`<textarea name="${k}"></textarea>`:t==='programstatus'?`<select name="${k}"><option value="planned">مخطط</option><option value="active">جارٍ التنفيذ</option><option value="completed">مكتمل</option><option value="cancelled">ملغي</option></select>`:`<input name="${k}" type="${t}">`;h+=`<div class="${cls}"><label>${l}</label>${inp}</div>`}
  h+=`<div class="report-cell span3"><label>رفع المرفقات والشواهد</label><input id="programFiles" type="file" accept=".jpg,.jpeg,.png,.pdf,.mp4" multiple><p class="muted">يمكن إرفاق صور أو PDF أو فيديو MP4، بحد 10 ميجابايت للملف.</p></div></div></div><div class="actions"><button class="btn" id="programSaveBtn">حفظ البرنامج</button><button type="reset" class="btn light" onclick="cancelProgramEdit()">مسح النموذج</button></div><p id="programMsg"></p></form>`;
  $('programEditor').innerHTML=h;
+ if(auth.role==='teacher'&&$('programForm')?.elements?.responsible_teacher){$('programForm').elements.responsible_teacher.value=auth.teacher_name||'';$('programForm').elements.responsible_teacher.readOnly=true}
  $('programForm').onsubmit=async e=>{
   e.preventDefault();let fd=new FormData(e.target),o={kind:'programs',title:fd.get('title'),form_details:{is_10_percent:e.target.elements.is_10_percent.checked},school_year:'1448هـ'};
   for(let [k,,t] of programFields){let v=fd.get(k);if(t==='number'&&v!=='')v=Number(v);if(['domain','beneficiaries','goal_percent','location','positives','difficulties','recommendations'].includes(k))o.form_details[k]=v;else o[k]=v}
@@ -406,7 +472,7 @@ function renderProgramEditor(){
    let d,access='';
    if(editingProgramId){
     access=programAccess(editingProgramId);
-    if(access)d=await ops('creator_update_program',{id:editingProgramId,access_token:access,...o});
+    if(access||auth.role==='teacher')d=await ops('creator_update_program',{id:editingProgramId,access_token:access,...o});
     else d=await ops('update',{id:editingProgramId,...o});
    }else{
     d=await ops('create',o);access=d.access_token||'';if(access)localStorage.setItem('program_access_'+d.id,access);
@@ -420,11 +486,11 @@ function renderProgramEditor(){
  }
 }
 function programCard(x){
- const f=x.form_details||{},ten=f.is_10_percent?'<span class="ten-badge">10%</span>':'',own=!!programAccess(x.id),rs=x.review_status||'draft';let ownerActions='';if(own&&['draft','needs_changes','needs_data','needs_evidence'].includes(rs))ownerActions=`<button class="btn light" onclick="startEditProgram('${x.id}')">✏️ تعديل البرنامج</button><button class="btn" onclick="sendProgramForReview('${x.id}')">${rs==='draft'?'📤 إرسال للمراجعة':'🔁 إعادة الإرسال للمراجعة'}</button>`;else if(own&&rs==='submitted')ownerActions='<span class="permission-note">تم إرسال البرنامج لرائدة النشاط وهو الآن بانتظار المراجعة.</span>';const historyBtn=(own||canPlanEdit())?`<button class="btn gray" onclick="showProgramReviewHistory('${x.id}')">سجل المراجعات</button>`:'';const ownerDelete=own?`<button class="btn danger" onclick="creatorDeleteProgram('${x.id}')">🗑️ حذف البرنامج</button>`:'';const reviewNote=x.review_notes?`<div class="review-note"><b>ملاحظة رائدة النشاط:</b><br>${esc(x.review_notes)}</div>`:'';let leaderPanel='';if(canPlanEdit()&&rs==='submitted')leaderPanel=`<div class="review-panel"><b>مراجعة رائدة النشاط</b><textarea id="programReviewNote-${x.id}" placeholder="اكتبي الملاحظة عند طلب تعديل أو بيانات أو مرفقات"></textarea><div class="actions"><button class="btn" onclick="reviewProgram('${x.id}','approved')">✓ اعتماد</button><button class="btn orange" onclick="reviewProgram('${x.id}','needs_changes')">يحتاج تعديل</button><button class="btn gray" onclick="reviewProgram('${x.id}','needs_data')">نقص بيانات</button><button class="btn alt" onclick="reviewProgram('${x.id}','needs_evidence')">نقص مرفقات</button></div></div>`;return `<article class="item"><div class="section-head"><h3>${esc(x.title)} ${ten}</h3><div><span class="badge">${esc(statusArabic(x.status))}</span> <span class="review-badge ${reviewBadgeClass(rs)}">${esc(reviewStatusArabic(rs))}</span></div></div><div class="program-summary"><span><b>المجال:</b> ${esc(f.domain||'—')}</span><span><b>المسؤولة:</b> ${esc(x.responsible_teacher||'—')}</span><span><b>المستفيدات:</b> ${esc(f.beneficiaries||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div><p>${esc(x.description||'')}</p>${reviewNote}<div class="actions"><button class="btn gray" onclick="showEvidence('${x.id}','programs')">المرفقات</button><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea',true)">قياس الأثر</button><button class="btn light" onclick="previewProgramReport('${x.id}')">معاينة التقرير</button><button class="btn gold" onclick="downloadProgramReportPdf('${x.id}')">حفظ PDF</button><button class="btn" onclick="printOfficialProgramReport('${x.id}')">طباعة التقرير</button>${ownerActions}${historyBtn}${ownerDelete}<span class="badge">✓ محفوظ تلقائيًا في الأرشيف</span></div>${leaderPanel}<div id="extra-${x.id}"></div></article>`;
+ const f=x.form_details||{},ten=f.is_10_percent?'<span class="ten-badge">10%</span>':'',own=!!programAccess(x.id)||auth.role==='teacher',rs=x.review_status||'draft';let ownerActions='';if(own&&['draft','needs_changes','needs_data','needs_evidence'].includes(rs))ownerActions=`<button class="btn light" onclick="startEditProgram('${x.id}')">✏️ تعديل البرنامج</button><button class="btn" onclick="sendProgramForReview('${x.id}')">${rs==='draft'?'📤 إرسال للمراجعة':'🔁 إعادة الإرسال للمراجعة'}</button>`;else if(own&&rs==='submitted')ownerActions='<span class="permission-note">تم إرسال البرنامج لرائدة النشاط وهو الآن بانتظار المراجعة.</span>';const historyBtn=(own||canPlanEdit())?`<button class="btn gray" onclick="showProgramReviewHistory('${x.id}')">سجل المراجعات</button>`:'';const ownerDelete=own?`<button class="btn danger" onclick="creatorDeleteProgram('${x.id}')">🗑️ حذف البرنامج</button>`:'';const reviewNote=x.review_notes?`<div class="review-note"><b>ملاحظة رائدة النشاط:</b><br>${esc(x.review_notes)}</div>`:'';let leaderPanel='';if(canPlanEdit()&&rs==='submitted')leaderPanel=`<div class="review-panel"><b>مراجعة رائدة النشاط</b><textarea id="programReviewNote-${x.id}" placeholder="اكتبي الملاحظة عند طلب تعديل أو بيانات أو مرفقات"></textarea><div class="actions"><button class="btn" onclick="reviewProgram('${x.id}','approved')">✓ اعتماد</button><button class="btn orange" onclick="reviewProgram('${x.id}','needs_changes')">يحتاج تعديل</button><button class="btn gray" onclick="reviewProgram('${x.id}','needs_data')">نقص بيانات</button><button class="btn alt" onclick="reviewProgram('${x.id}','needs_evidence')">نقص مرفقات</button></div></div>`;return `<article class="item"><div class="section-head"><h3>${esc(x.title)} ${ten}</h3><div><span class="badge">${esc(statusArabic(x.status))}</span> <span class="review-badge ${reviewBadgeClass(rs)}">${esc(reviewStatusArabic(rs))}</span></div></div><div class="program-summary"><span><b>المجال:</b> ${esc(f.domain||'—')}</span><span><b>المسؤولة:</b> ${esc(x.responsible_teacher||'—')}</span><span><b>المستفيدات:</b> ${esc(f.beneficiaries||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div><p>${esc(x.description||'')}</p>${reviewNote}<div class="actions"><button class="btn gray" onclick="showEvidence('${x.id}','programs')">المرفقات</button><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea',true)">قياس الأثر</button><button class="btn light" onclick="previewProgramReport('${x.id}')">معاينة التقرير</button><button class="btn gold" onclick="downloadProgramReportPdf('${x.id}')">حفظ PDF</button><button class="btn" onclick="printOfficialProgramReport('${x.id}')">طباعة التقرير</button>${ownerActions}${historyBtn}${ownerDelete}<span class="badge">✓ محفوظ تلقائيًا في الأرشيف</span></div>${leaderPanel}<div id="extra-${x.id}"></div></article>`;
 }
 async function loadPrograms(){
  renderProgramEditor();$('programRecords').innerHTML='<p>جارٍ التحميل...</p>';
- try{let d=await ops('list',{kind:'programs'}),items=d.items||[];programCache=Object.fromEntries(items.map(x=>[x.id,x]));$('programRecords').innerHTML=items.length?items.map(programCard).join(''):'<p class="empty">لا توجد برامج.</p>';for(const x of items){if(programAccess(x.id))loadOwnerReviewState(x.id)}}catch(e){$('programRecords').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
+ try{let d=await ops('list',{kind:'programs'}),items=d.items||[];programCache=Object.fromEntries(items.map(x=>[x.id,x]));$('programRecords').innerHTML=items.length?items.map(programCard).join(''):'<p class="empty">لا توجد برامج.</p>';for(const x of items){if(programAccess(x.id)||auth.role==='teacher')loadOwnerReviewState(x.id)}}catch(e){$('programRecords').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
 }
 function startEditProgram(id){
  const x=programCache[id];if(!x)return notify('تعذر العثور على البرنامج','bad');
@@ -436,7 +502,7 @@ function startEditProgram(id){
 }
 function cancelProgramEdit(){editingProgramId='';if($('programForm'))$('programForm').reset();if($('programFormTitle'))$('programFormTitle').textContent='إضافة برنامج جديد';if($('programSaveBtn'))$('programSaveBtn').textContent='حفظ البرنامج';if($('cancelProgramEditBtn'))$('cancelProgramEditBtn').classList.add('hidden')}
 async function sendProgramForReview(id){
- const access=programAccess(id);if(!access)return notify('هذه العملية متاحة لصاحبة البرنامج من الجهاز الذي أنشأته منه','bad');
+ const access=programAccess(id);if(!access&&auth.role!=='teacher')return notify('هذه العملية متاحة لصاحبة البرنامج فقط','bad');
  if(!confirm('إرسال البرنامج لرائدة النشاط للمراجعة؟'))return;
  try{await ops('submit_program_review',{id,access_token:access});notify('تم إرسال البرنامج لرائدة النشاط للمراجعة');await loadPrograms()}catch(e){notify(e.message,'bad')}
 }
@@ -733,6 +799,11 @@ async function loadArchive(){
    const [p,r]=await Promise.all([arc('list',{kind:'programs'}),arc('list',{kind:'reports'})]),programs=p.items||[],reports=r.items||[];
    programs.forEach(x=>programCache[x.id]=x);const cards=[...programs.map(x=>`<article class="item archive-record"><div class="section-head"><h3>📋 ${esc(x.title)}</h3><span class="archive-state">${x.deleted_at?'محذوف من المنصة - محفوظ بالأرشيف':'محفوظ تلقائيًا'}</span></div>${archiveProgramDetails(x)}<div class="actions"><button class="btn gray" onclick="showArchiveEvidence('${x.id}')">المرفقات</button><button class="btn light" onclick="previewProgramReport('${x.id}')">معاينة التقرير</button><button class="btn gold" onclick="downloadProgramReportPdf('${x.id}')">PDF</button><button class="btn" onclick="printOfficialProgramReport('${x.id}')">طباعة</button>${x.deleted_at?`<button class="btn" onclick="restoreDeletedArchive('${x.id}','programs')">استعادة إلى المنصة</button>`:`<button class="btn danger" onclick="softDeleteArchive('${x.id}','programs')">حذف من المنصة</button>`}</div><div id="archive-extra-${x.id}"></div></article>`),...reports.map(x=>`<article class="item archive-record"><div class="section-head"><h3>📝 ${esc(x.title)}</h3><span class="archive-state">${x.deleted_at?'محذوف من المنصة - محفوظ بالأرشيف':'محفوظ تلقائيًا'}</span></div><p>${esc(x.summary||'')}</p><div class="actions">${x.deleted_at?`<button class="btn" onclick="restoreDeletedArchive('${x.id}','reports')">استعادة إلى المنصة</button>`:`<button class="btn danger" onclick="softDeleteArchive('${x.id}','reports')">حذف من المنصة</button>`}</div></article>`)];
    $('archiveRecords').innerHTML=cards.length?cards.join(''):'<p class="empty">لا توجد أعمال محفوظة بعد.</p>';
+  }else if(auth.role==='teacher'){
+   const d=await arc('teacher_archive'),programs=d.programs||[],reports=d.reports||[];
+   programs.forEach(x=>programCache[x.id]=x);
+   const cards=[...programs.map(x=>`<article class="item archive-record"><div class="section-head"><h3>📋 ${esc(x.title)}</h3><span class="archive-state">${x.deleted_at?'محذوف من المنصة - محفوظ بالأرشيف':'محفوظ تلقائيًا'}</span></div>${archiveProgramDetails(x)}<div class="actions"><button class="btn gray" onclick="showArchiveEvidence('${x.id}')">المرفقات</button><button class="btn light" onclick="previewProgramReport('${x.id}')">معاينة التقرير</button><button class="btn gold" onclick="downloadProgramReportPdf('${x.id}')">PDF</button><button class="btn" onclick="printOfficialProgramReport('${x.id}')">طباعة</button>${x.deleted_at?`<button class="btn" onclick="creatorRestoreProgram('${x.id}')">استعادة إلى المنصة</button>`:`<button class="btn danger" onclick="creatorDeleteProgram('${x.id}')">حذف من المنصة</button>`}</div><div id="archive-extra-${x.id}"></div></article>`),...reports.map(x=>`<article class="item archive-record"><div class="section-head"><h3>📝 ${esc(x.title)}</h3><span class="archive-state">${x.deleted_at?'محذوف من المنصة - محفوظ بالأرشيف':'محفوظ تلقائيًا'}</span></div><p>${esc(x.summary||'')}</p></article>`)];
+   $('archiveRecords').innerHTML=cards.length?cards.join(''):'<p class="empty">لا توجد أعمال محفوظة بعد.</p>';
   }else{
    const owned=creatorArchiveItems();if(!owned.length){$('archiveRecords').innerHTML='<p class="empty">كل برنامج تحفظينه سيظهر هنا تلقائيًا على هذا الجهاز.</p>';return}
    const d=await jsonPost(EP.archive,{action:'creator_list',items:owned},false),items=d.items||[];items.forEach(x=>programCache[x.id]=x);
@@ -743,8 +814,8 @@ async function loadArchive(){
 async function showArchiveEvidence(id){const box=$('archive-extra-'+id);if(!box)return;box.innerHTML='<p>جارٍ تحميل المرفقات...</p>';try{let d=await evidence('list','programs',id),items=d.items||[];box.innerHTML=items.length?`<div class="review-panel"><b>المرفقات والشواهد</b><div class="actions">${items.map(f=>`<button class="btn gray" onclick="openEvidence('${id}','programs','${f.id}')">فتح: ${esc(f.original_name)}</button>`).join('')}</div></div>`:'<p class="muted">لا توجد مرفقات.</p>'}catch(e){box.innerHTML='<p class="bad">'+esc(e.message)+'</p>'}}
 async function softDeleteArchive(id,kind){if(!confirm('حذف هذا السجل من المنصة؟ سيبقى محفوظًا في الأرشيف ويمكن استعادته.'))return;try{await arc('delete_record',{kind,id});notify('تم حذفه من المنصة مع إبقائه محفوظًا في الأرشيف');await loadArchive();await loadPrograms();await refreshDashboard()}catch(e){notify(e.message,'bad')}}
 async function restoreDeletedArchive(id,kind){try{await arc('restore_record',{kind,id});notify('تمت استعادة السجل إلى المنصة');await loadArchive();await loadPrograms();await refreshDashboard()}catch(e){notify(e.message,'bad')}}
-async function creatorDeleteProgram(id){const access=programAccess(id);if(!access)return notify('غير مصرح بهذا البرنامج','bad');try{await jsonPost(EP.archive,{action:'creator_delete',id,access_token:access},false);notify('تم حذف البرنامج من المنصة مع إبقائه في الأرشيف');await loadArchive();await loadPrograms()}catch(e){notify(e.message,'bad')}}
-async function creatorRestoreProgram(id){const access=programAccess(id);if(!access)return;try{await jsonPost(EP.archive,{action:'creator_restore',id,access_token:access},false);notify('تمت استعادة البرنامج إلى المنصة');await loadArchive();await loadPrograms()}catch(e){notify(e.message,'bad')}}
+async function creatorDeleteProgram(id){const access=programAccess(id);if(!access&&auth.role!=='teacher')return notify('غير مصرح بهذا البرنامج','bad');try{await jsonPost(EP.archive,{action:'creator_delete',id,access_token:access},auth.role==='teacher');notify('تم حذف البرنامج من المنصة مع إبقائه في الأرشيف');await loadArchive();await loadPrograms()}catch(e){notify(e.message,'bad')}}
+async function creatorRestoreProgram(id){const access=programAccess(id);if(!access&&auth.role!=='teacher')return;try{await jsonPost(EP.archive,{action:'creator_restore',id,access_token:access},auth.role==='teacher');notify('تمت استعادة البرنامج إلى المنصة');await loadArchive();await loadPrograms()}catch(e){notify(e.message,'bad')}}
 
 const impactEvaluation=[
  ['goal_clarity','وضوح أهداف البرنامج'],['operational_link','ارتباط البرنامج بالخطة التشغيلية'],
