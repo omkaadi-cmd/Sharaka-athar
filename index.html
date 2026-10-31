@@ -355,7 +355,7 @@ function renderProgramEditor(){
  }
 }
 function programCard(x){
- const f=x.form_details||{},ten=f.is_10_percent?'<span class="ten-badge">10%</span>':'',own=!!programAccess(x.id),rs=x.review_status||'draft';let ownerActions='';if(own&&['draft','needs_changes','needs_data','needs_evidence'].includes(rs))ownerActions=`<button class="btn light" onclick="startEditProgram('${x.id}')">✏️ تعديل البرنامج</button><button class="btn" onclick="sendProgramForReview('${x.id}')">${rs==='draft'?'📤 إرسال للمراجعة':'🔁 إعادة الإرسال للمراجعة'}</button>`;else if(own&&rs==='submitted')ownerActions='<span class="permission-note">تم إرسال البرنامج لرائدة النشاط وهو الآن بانتظار المراجعة.</span>';const historyBtn=(own||canPlanEdit())?`<button class="btn gray" onclick="showProgramReviewHistory('${x.id}')">سجل المراجعات</button>`:'';const reviewNote=x.review_notes?`<div class="review-note"><b>ملاحظة رائدة النشاط:</b><br>${esc(x.review_notes)}</div>`:'';let leaderPanel='';if(canPlanEdit()&&rs==='submitted')leaderPanel=`<div class="review-panel"><b>مراجعة رائدة النشاط</b><textarea id="programReviewNote-${x.id}" placeholder="اكتبي الملاحظة عند طلب تعديل أو بيانات أو مرفقات"></textarea><div class="actions"><button class="btn" onclick="reviewProgram('${x.id}','approved')">✓ اعتماد</button><button class="btn orange" onclick="reviewProgram('${x.id}','needs_changes')">يحتاج تعديل</button><button class="btn gray" onclick="reviewProgram('${x.id}','needs_data')">نقص بيانات</button><button class="btn alt" onclick="reviewProgram('${x.id}','needs_evidence')">نقص مرفقات</button></div></div>`;return `<article class="item"><div class="section-head"><h3>${esc(x.title)} ${ten}</h3><div><span class="badge">${esc(statusArabic(x.status))}</span> <span class="review-badge ${reviewBadgeClass(rs)}">${esc(reviewStatusArabic(rs))}</span></div></div><div class="program-summary"><span><b>المجال:</b> ${esc(f.domain||'—')}</span><span><b>المسؤولة:</b> ${esc(x.responsible_teacher||'—')}</span><span><b>المستفيدات:</b> ${esc(f.beneficiaries||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div><p>${esc(x.description||'')}</p>${reviewNote}<div class="actions"><button class="btn gray" onclick="showEvidence('${x.id}','programs')">المرفقات</button><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea',true)">قياس الأثر</button><button class="btn light" onclick="previewProgramReport('${x.id}')">معاينة التقرير</button><button class="btn gold" onclick="downloadProgramReportPdf('${x.id}')">تحميل PDF</button><button class="btn" onclick="printOfficialProgramReport('${x.id}')">طباعة التقرير</button>${ownerActions}${historyBtn}<span class="badge">✓ محفوظ تلقائيًا في الأرشيف</span></div>${leaderPanel}<div id="extra-${x.id}"></div></article>`;
+ const f=x.form_details||{},ten=f.is_10_percent?'<span class="ten-badge">10%</span>':'',own=!!programAccess(x.id),rs=x.review_status||'draft';let ownerActions='';if(own&&['draft','needs_changes','needs_data','needs_evidence'].includes(rs))ownerActions=`<button class="btn light" onclick="startEditProgram('${x.id}')">✏️ تعديل البرنامج</button><button class="btn" onclick="sendProgramForReview('${x.id}')">${rs==='draft'?'📤 إرسال للمراجعة':'🔁 إعادة الإرسال للمراجعة'}</button>`;else if(own&&rs==='submitted')ownerActions='<span class="permission-note">تم إرسال البرنامج لرائدة النشاط وهو الآن بانتظار المراجعة.</span>';const historyBtn=(own||canPlanEdit())?`<button class="btn gray" onclick="showProgramReviewHistory('${x.id}')">سجل المراجعات</button>`:'';const ownerDelete=own?`<button class="btn danger" onclick="creatorDeleteProgram('${x.id}')">🗑️ حذف البرنامج</button>`:'';const reviewNote=x.review_notes?`<div class="review-note"><b>ملاحظة رائدة النشاط:</b><br>${esc(x.review_notes)}</div>`:'';let leaderPanel='';if(canPlanEdit()&&rs==='submitted')leaderPanel=`<div class="review-panel"><b>مراجعة رائدة النشاط</b><textarea id="programReviewNote-${x.id}" placeholder="اكتبي الملاحظة عند طلب تعديل أو بيانات أو مرفقات"></textarea><div class="actions"><button class="btn" onclick="reviewProgram('${x.id}','approved')">✓ اعتماد</button><button class="btn orange" onclick="reviewProgram('${x.id}','needs_changes')">يحتاج تعديل</button><button class="btn gray" onclick="reviewProgram('${x.id}','needs_data')">نقص بيانات</button><button class="btn alt" onclick="reviewProgram('${x.id}','needs_evidence')">نقص مرفقات</button></div></div>`;return `<article class="item"><div class="section-head"><h3>${esc(x.title)} ${ten}</h3><div><span class="badge">${esc(statusArabic(x.status))}</span> <span class="review-badge ${reviewBadgeClass(rs)}">${esc(reviewStatusArabic(rs))}</span></div></div><div class="program-summary"><span><b>المجال:</b> ${esc(f.domain||'—')}</span><span><b>المسؤولة:</b> ${esc(x.responsible_teacher||'—')}</span><span><b>المستفيدات:</b> ${esc(f.beneficiaries||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div><p>${esc(x.description||'')}</p>${reviewNote}<div class="actions"><button class="btn gray" onclick="showEvidence('${x.id}','programs')">المرفقات</button><button class="btn alt" onclick="openImpact('${x.id}','impactFormArea',true)">قياس الأثر</button><button class="btn light" onclick="previewProgramReport('${x.id}')">معاينة التقرير</button><button class="btn gold" onclick="downloadProgramReportPdf('${x.id}')">تحميل PDF</button><button class="btn" onclick="printOfficialProgramReport('${x.id}')">طباعة التقرير</button>${ownerActions}${historyBtn}${ownerDelete}<span class="badge">✓ محفوظ تلقائيًا في الأرشيف</span></div>${leaderPanel}<div id="extra-${x.id}"></div></article>`;
 }
 async function loadPrograms(){
  renderProgramEditor();$('programRecords').innerHTML='<p>جارٍ التحميل...</p>';
@@ -459,9 +459,58 @@ function buildOfficialProgramReport(x,images,files){
  </div></div><script>(function(){function fit(){if(matchMedia('print').matches)return;const p=document.querySelector('.rpage');if(!p)return;const s=Math.min(1,(window.innerWidth-12)/794);p.style.transform='scale('+s+')';p.style.transformOrigin='top center';document.body.style.height=(1123*s+20)+'px'}addEventListener('load',fit);addEventListener('resize',fit)})();<\/script></body></html>`
 }
 async function officialProgramReportBundle(id){const x=programCache[id];if(!x)throw Error('تعذر العثور على البرنامج');const warnings=programReportWarnings(x);if(warnings.length)throw Error('النص طويل على صفحة A4 واحدة. اختصري الحقول التالية: '+warnings.join('، '));let files=[],images=[];try{let d=await evidence('list','programs',id);files=d.items||[];for(const it of files){if(images.length>=3)break;if(String(it.mime_type||'').startsWith('image/')){try{let o=await evidence('open','programs',id,{file_id:it.id});images.push({name:it.original_name,url:o.url})}catch{}}}}catch{}return {x,files,images,html:buildOfficialProgramReport(x,images,files)}}
-function previewProgramReport(id){officialProgramReportBundle(id).then(b=>{const w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');w.document.open();w.document.write(b.html);w.document.close()}).catch(e=>notify(e.message,'warn'))}
-function printOfficialProgramReport(id){officialProgramReportBundle(id).then(b=>{const w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');w.document.open();w.document.write(b.html.replace('</body>','<script>setTimeout(()=>window.print(),700)<\/script></body>'));w.document.close()}).catch(e=>notify(e.message,'warn'))}
-async function downloadProgramReportPdf(id){try{const b=await officialProgramReportBundle(id);if(!window.html2canvas||!window.jspdf?.jsPDF)throw Error('تعذر تحميل أداة PDF. أعيدي فتح الصفحة وحاولي مجددًا.');const host=document.createElement('div');host.style.cssText='position:fixed;left:-5000px;top:0;width:794px;height:1123px;background:#fff;z-index:-1';host.innerHTML=b.html.match(/<body>([\s\S]*)<\/body>/)?.[1]||'';document.body.appendChild(host);const page=host.querySelector('.rpage');page.style.width='794px';page.style.height='1123px';const canvas=await html2canvas(page,{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false});const {jsPDF}=window.jspdf,pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});pdf.addImage(canvas.toDataURL('image/jpeg',0.96),'JPEG',0,0,210,297,undefined,'FAST');pdf.save(`تقرير-${b.x.title}.pdf`);host.remove()}catch(e){notify(e.message,'warn')}}
+async function officialProgramReportSnapshot(id){
+ if(!window.html2canvas)throw Error('تعذر تحميل أداة إنشاء صورة التقرير. أعيدي فتح الصفحة وحاولي مجددًا.');
+ const b=await officialProgramReportBundle(id);
+ const frame=document.createElement('iframe');
+ frame.setAttribute('aria-hidden','true');
+ frame.style.cssText='position:fixed;left:-10000px;top:0;width:820px;height:1160px;border:0;opacity:0;pointer-events:none;background:#fff;z-index:-1';
+ document.body.appendChild(frame);
+ try{
+  await new Promise((resolve,reject)=>{
+   const timer=setTimeout(()=>reject(new Error('تأخر تجهيز التقرير')),8000);
+   frame.onload=()=>{clearTimeout(timer);resolve()};
+   frame.srcdoc=b.html;
+  });
+  const doc=frame.contentDocument;
+  if(doc?.fonts?.ready)await doc.fonts.ready;
+  const page=doc.querySelector('.rpage');
+  if(!page)throw Error('تعذر تجهيز قالب التقرير');
+  page.style.transform='none';
+  page.style.transformOrigin='top left';
+  page.style.margin='0';
+  page.style.boxShadow='none';
+  if(doc.body){doc.body.style.margin='0';doc.body.style.background='#fff';doc.body.style.height='1123px';}
+  const imgs=[...doc.images];
+  await Promise.all(imgs.map(img=>img.complete?Promise.resolve():new Promise(res=>{img.onload=img.onerror=()=>res()})));
+  await new Promise(r=>setTimeout(r,250));
+  const canvas=await html2canvas(page,{scale:2,useCORS:true,allowTaint:false,backgroundColor:'#ffffff',logging:false,width:794,height:1123,windowWidth:820,windowHeight:1160});
+  return {bundle:b,canvas};
+ }finally{frame.remove()}
+}
+async function previewProgramReport(id){
+ try{
+  const {bundle,canvas}=await officialProgramReportSnapshot(id),url=canvas.toDataURL('image/jpeg',0.97);
+  const w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');
+  w.document.open();w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>معاينة تقرير ${esc(bundle.x.title)}</title><style>html,body{margin:0;background:#e9efed}body{display:grid;place-items:start center;padding:10px}.sheet{width:min(100%,794px);box-shadow:0 4px 22px #0003;background:#fff}.sheet img{display:block;width:100%;height:auto}</style></head><body><div class="sheet"><img src="${url}" alt="تقرير البرنامج"></div></body></html>`);w.document.close();
+ }catch(e){notify(e.message,'warn')}
+}
+async function printOfficialProgramReport(id){
+ try{
+  const {canvas}=await officialProgramReportSnapshot(id),url=canvas.toDataURL('image/jpeg',0.98);
+  const w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');
+  w.document.open();w.document.write(`<!doctype html><html><head><meta charset="utf-8"><style>@page{size:A4 portrait;margin:0}html,body{margin:0;background:#fff}img{display:block;width:210mm;height:297mm;object-fit:contain}@media print{img{width:210mm;height:297mm}}</style></head><body><img src="${url}" onload="setTimeout(()=>window.print(),400)"></body></html>`);w.document.close();
+ }catch(e){notify(e.message,'warn')}
+}
+async function downloadProgramReportPdf(id){
+ try{
+  if(!window.jspdf?.jsPDF)throw Error('تعذر تحميل أداة PDF. أعيدي فتح الصفحة وحاولي مجددًا.');
+  const {bundle,canvas}=await officialProgramReportSnapshot(id);
+  const {jsPDF}=window.jspdf,pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4',compress:true});
+  pdf.addImage(canvas.toDataURL('image/jpeg',0.98),'JPEG',0,0,210,297,undefined,'FAST');
+  pdf.save(`تقرير-${bundle.x.title}.pdf`);
+ }catch(e){notify(e.message,'warn')}
+}
 
 async function legacyPrintProgramReport(id){let x=programCache[id];if(!x)return alert('تعذر العثور على البرنامج');let w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');w.document.write('<p style="font-family:Tahoma;text-align:center;padding:40px">جارٍ تجهيز التقرير...</p>');let f=x.form_details||{},files=[],images=[];try{let d=await evidence('list','programs',id);files=d.items||[];for(let it of files){if(String(it.mime_type||'').startsWith('image/')){try{let o=await evidence('open','programs',id,{file_id:it.id});images.push({name:it.original_name,url:o.url})}catch{}}}}catch{}let rows=[['اسم البرنامج',x.title],['المجال',f.domain],['برنامج 10%',f.is_10_percent?'نعم':'لا'],['الهدف',x.objectives],['الفئة المستهدفة',x.audience],['تاريخ التنفيذ',x.start_date],['عدد المستفيدين',f.beneficiaries],['نسبة تحقق الهدف',f.goal_percent?f.goal_percent+'%':''],['مكان التنفيذ',f.location],['المسؤولة عن التنفيذ',x.responsible_teacher],['حالة البرنامج',statusArabic(x.status)],['حالة المراجعة',reviewStatusArabic(x.review_status||'draft')],['وصف التنفيذ',x.description],['الإيجابيات',f.positives],['الصعوبات',f.difficulties],['التوصيات',f.recommendations]];let html=`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير ${esc(x.title)}</title><style>body{font-family:Tahoma,Arial;color:#173f4c;margin:0;padding:24px}.head{text-align:center;border-bottom:5px solid #14566a;padding-bottom:14px}.head h1{margin:5px}.report{max-width:900px;margin:auto}.grid{display:grid;grid-template-columns:1fr 2fr;border:1px solid #cad9d5}.k,.v{padding:10px;border-bottom:1px solid #d6e2de}.k{font-weight:bold;background:#edf4f2}.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}.photos img{width:100%;max-height:320px;object-fit:contain;border:1px solid #ddd}.file{padding:6px;background:#f1f5f4;margin:4px;border-radius:8px}@media print{body{padding:0}.report{max-width:none}.photos{break-inside:avoid}}</style></head><body><div class="report"><div class="head"><div>الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><h1>تقرير إنجاز برنامج</h1><h2>${esc(x.title)}</h2></div><div class="grid">${rows.map(r=>`<div class="k">${esc(r[0])}</div><div class="v">${esc(r[1]||'—')}</div>`).join('')}</div><h3>المرفقات والشواهد</h3>${files.length?files.map(z=>`<span class="file">${esc(z.original_name)}</span>`).join(''):'<p>لا توجد مرفقات متاحة.</p>'}${images.length?`<div class="photos">${images.map(z=>`<div><img src="${z.url}"><p>${esc(z.name)}</p></div>`).join('')}</div>`:''}<p style="text-align:left;margin-top:30px">مديرة المدرسة: شعاع العنزي</p></div><script>setTimeout(()=>{window.focus();window.print()},900)<\/script></body></html>`;w.document.open();w.document.write(html);w.document.close()}
 function renderReportEditor(){let h=`<form id="reportForm"><h3>تقرير تنفيذ</h3><div class="row"><div><label>عنوان التقرير</label><input name="title" required></div><div><label>تاريخ التقرير</label><input name="report_date" type="date"></div><div><label>عدد المستفيدات</label><input name="attendees" type="number"></div></div><label>ملخص التنفيذ</label><textarea name="summary"></textarea><label>النتائج</label><textarea name="outcomes"></textarea><label>التحديات</label><textarea name="challenges"></textarea><label>خطة التحسين</label><textarea name="improvement_plan"></textarea><div class="actions"><button class="btn">حفظ التقرير</button><button type="button" class="btn gray" onclick="printReportDraft()">تصدير PDF رسمي</button></div><p id="reportMsg"></p></form>`;$('reportEditor').innerHTML=h;$('reportForm').onsubmit=async e=>{e.preventDefault();let fd=new FormData(e.target),o={kind:'reports',school_year:'1448هـ'};for(let k of ['title','report_date','attendees','summary','outcomes','challenges','improvement_plan']){let v=fd.get(k);if(k==='attendees'&&v!=='')v=Number(v);o[k]=v}$('reportMsg').textContent='جارٍ الحفظ...';try{await ops('create',o);$('reportMsg').className='ok';$('reportMsg').textContent='تم حفظ التقرير';e.target.reset();await loadReports();await refreshDashboard();await loadMagazine()}catch(er){$('reportMsg').className='bad';$('reportMsg').textContent=er.message}}}
@@ -470,8 +519,12 @@ async function loadReports(){renderReportEditor();$('reportRecords').innerHTML='
 $('subCategory').onchange=()=>{let other=$('subCategory').value==='أخرى';$('otherCategoryBox').classList.toggle('hidden',!other);$('otherCategory').required=other;if(!other)$('otherCategory').value=''};
 async function reviewSub(id,status){
  const buttons=[...document.querySelectorAll('.review-actions button')];buttons.forEach(b=>b.disabled=true);
- let note='';if(status==='rejected')note=prompt('اكتبي سبب الرفض ليظهر للمشارك في سجل المتابعة:','')||'';
- try{await jsonPost(EP.staff,{action:'review',token:auth.token,id,status,note},false);notify(status==='approved'?'تم اعتماد المشاركة وإصدار شهادة الشكر بنجاح':'تم رفض المشاركة وتسجيل الملاحظة');await loadSubmissions();await loadMagazine();if(canMagazineEdit())await loadMagazineEditor()}catch(e){notify(e.message,'bad')}finally{buttons.forEach(b=>b.disabled=false)}
+ let note='';if(status==='rejected')note=prompt('اكتبي سبب الرفض إن رغبتِ:','')||'';
+ try{
+  await jsonPost(EP.staff,{action:'review',token:auth.token,id,status,note},true);
+  notify(status==='approved'?'تم اعتماد المشاركة بنجاح':'تم رفض المشاركة بنجاح');
+  await loadSubmissions();await loadMagazine();if(canMagazineEdit())await loadMagazineEditor();
+ }catch(e){notify(e.message,'bad')}finally{buttons.forEach(b=>b.disabled=false)}
 }
 $('submissionForm').onsubmit=async e=>{e.preventDefault();let files=$('subFiles').files;if(files.length>3||[...files].some(f=>f.size>5242880))return $('subMsg').innerHTML='<span class="bad">تحققي من عدد الملفات وحجمها.</span>';let fd=new FormData(e.target);if(fd.get('category')==='أخرى'&&!String(fd.get('other_category')||'').trim())return $('subMsg').innerHTML='<span class="bad">اكتبي نوع المشاركة في خانة أخرى.</span>';$('subSend').disabled=true;$('subMsg').textContent='جارٍ حفظ المشاركة وإصدار الشهادة...';try{let r;try{r=await fetch(EP.submit,{method:'POST',body:fd})}catch(ne){throw Error(friendlyNetworkError(ne))}let d;try{d=await r.json()}catch{throw Error('استجابة غير صالحة من خدمة المشاركات')}if(!r.ok||!d.ok)throw Error(d.error||'تعذر الإرسال');$('subMsg').innerHTML='<span class="ok">تم حفظ المشاركة بكامل بياناتها ومرفقاتها، وتم إصدار شهادة الشكر.</span>';if(d.certificate){saveCertificateLocally(d.certificate);renderIssuedCertificate(d.certificate)}e.target.reset();$('otherCategoryBox').classList.add('hidden');$('otherCategory').required=false;await loadMagazine()}catch(er){$('subMsg').innerHTML='<span class="bad">'+esc(er.message)+'</span>'}finally{$('subSend').disabled=false}}
 const planDomains=['الأيام والمناسبات','المواطنة والحياة','العلوم والتقنية','الثقافة والفنون','الرياضة والصحة','النشاط الكشفي'];
@@ -636,14 +689,43 @@ function printImpactAssessment(id){
 }
 
 function submissionStatusArabic(s){return ({pending:'بانتظار المراجعة',approved:'معتمدة',rejected:'مرفوضة',needs_changes:'تحتاج تعديل'})[s]||s||'بانتظار المراجعة'}
-async function openSubmissionFile(file_id){try{let d=await jsonPost(EP.staff,{action:'file',token:auth.token,file_id},false);window.open(d.url,'_blank')}catch(e){notify(e.message,'bad')}}
+async function openSubmissionFile(file_id){try{let d=await jsonPost(EP.staff,{action:'file',token:auth.token,file_id},true);window.open(d.url,'_blank')}catch(e){notify(e.message,'bad')}}
 async function loadSubmissions(){
  if(!$('submissionRecords'))return;$('submissionRecords').innerHTML='<p>جارٍ تحميل المشاركات...</p>';
  try{
-  if(!auth.mode){let d=await jsonPost(EP.staff,{action:'public_list'},false),items=d.items||[];$('submissionRecords').innerHTML=items.length?items.map(x=>`<article class="item"><h3>${esc(x.title)}</h3><p><span class="badge">${esc(x.category||'مشاركة')}</span> <span class="muted">${esc(submissionStatusArabic(x.status))}</span></p></article>`).join(''):'<p class="empty">لا توجد مشاركات.</p>';return}
-  let d=await jsonPost(EP.staff,{action:'list',token:auth.token},false),items=d.items||[];
-  $('submissionRecords').innerHTML=items.length?items.map(x=>{const approved=x.status==='approved',rejected=x.status==='rejected',files=x.submission_files||[];const controls=auth.role==='activity_leader'?`<div class="actions review-actions">${!approved?`<button class="btn" onclick="reviewSub('${x.id}','approved')">✓ اعتماد</button>`:'<span class="ok">✓ تم الاعتماد</span>'}${!rejected?`<button class="btn danger" onclick="reviewSub('${x.id}','rejected')">✕ رفض</button>`:'<span class="bad">✕ مرفوضة</span>'}</div>`:'';const fileButtons=files.length?`<div class="review-panel"><b>المرفقات والشواهد (${files.length})</b><div class="actions">${files.map(f=>`<button class="btn gray" onclick="openSubmissionFile('${f.id}')">فتح: ${esc(f.original_name)}</button>`).join('')}</div></div>`:'<p class="muted">لا توجد مرفقات.</p>';return `<article class="item"><div class="section-head"><div><h3>${esc(x.title)}</h3><p class="muted">${esc(x.submitter_name||'')} | ${esc(x.category||'')}</p></div><span class="badge">${esc(submissionStatusArabic(x.status))}</span></div><div class="program-summary"><span><b>صفة المشارك:</b> ${esc(({teacher:'معلمة',parent:'ولي أمر',student:'طالبة',volunteer:'متطوعة'})[x.submitter_type]||x.submitter_type||'—')}</span><span><b>اسم الطالبة:</b> ${esc(x.student_name||'—')}</span><span><b>الفصل:</b> ${esc(x.class_name||'—')}</span><span><b>تاريخ الإرسال:</b> ${new Date(x.submitted_at).toLocaleString('ar-SA')}</span></div><div class="review-panel"><b>وصف المشاركة</b><p style="white-space:pre-wrap">${esc(x.description||'لا يوجد وصف')}</p></div>${x.admin_notes?`<div class="review-note"><b>ملاحظة المراجعة:</b><br>${esc(x.admin_notes)}</div>`:''}${fileButtons}${controls}</article>`}).join(''):'<p class="empty">لا توجد مشاركات.</p>';
+  if(!auth.mode){
+   let d=await jsonPost(EP.staff,{action:'public_list'},false),items=d.items||[];
+   $('submissionRecords').innerHTML=items.length?items.map(x=>`<article class="item"><h3>${esc(x.title)}</h3><p><span class="badge">${esc(x.category||'مشاركة')}</span> <span class="muted">${esc(submissionStatusArabic(x.status))}</span></p></article>`).join(''):'<p class="empty">لا توجد مشاركات.</p>';
+   return;
+  }
+  let d=await jsonPost(EP.staff,{action:'list',token:auth.token},true),items=d.items||[];
+  const canReview=auth.mode==='admin'||auth.role==='activity_leader';
+  $('submissionRecords').innerHTML=items.length?items.map(x=>{
+   const approved=x.status==='approved',rejected=x.status==='rejected',files=x.submission_files||[];
+   let controls='';
+   if(canReview){
+    controls=`<div class="actions review-actions">
+      ${!approved?`<button class="btn" onclick="reviewSub('${x.id}','approved')">✓ اعتماد</button>`:'<span class="ok">✓ تم الاعتماد</span>'}
+      ${!rejected?`<button class="btn danger" onclick="reviewSub('${x.id}','rejected')">✕ رفض</button>`:`<span class="bad">✕ مرفوضة</span><button class="btn danger" onclick="deleteRejectedSubmission('${x.id}')">🗑️ حذف</button>`}
+    </div>`;
+   }
+   const fileButtons=files.length?`<div class="review-panel"><b>المرفقات والشواهد (${files.length})</b><div class="actions">${files.map(f=>`<button class="btn gray" onclick="openSubmissionFile('${f.id}')">فتح: ${esc(f.original_name)}</button>`).join('')}</div></div>`:'<p class="muted">لا توجد مرفقات.</p>';
+   return `<article class="item"><div class="section-head"><div><h3>${esc(x.title)}</h3><p class="muted">${esc(x.submitter_name||'')} | ${esc(x.category||'')}</p></div><span class="badge">${esc(submissionStatusArabic(x.status))}</span></div>
+   <div class="program-summary"><span><b>صفة المشارك:</b> ${esc(({teacher:'معلمة',parent:'ولي أمر',student:'طالبة',volunteer:'متطوعة'})[x.submitter_type]||x.submitter_type||'—')}</span><span><b>اسم الطالبة:</b> ${esc(x.student_name||'—')}</span><span><b>الفصل:</b> ${esc(x.class_name||'—')}</span><span><b>تاريخ الإرسال:</b> ${new Date(x.submitted_at).toLocaleString('ar-SA')}</span></div>
+   <div class="review-panel"><b>وصف المشاركة</b><p style="white-space:pre-wrap">${esc(x.description||'لا يوجد وصف')}</p></div>
+   ${x.admin_notes?`<div class="review-note"><b>ملاحظة المراجعة:</b><br>${esc(x.admin_notes)}</div>`:''}${fileButtons}${controls}</article>`;
+  }).join(''):'<p class="empty">لا توجد مشاركات.</p>';
  }catch(e){$('submissionRecords').innerHTML='<p class="bad">'+esc(e.message)+'</p>'}
+}
+
+async function deleteRejectedSubmission(id){
+ if(!(auth.mode==='admin'||auth.role==='activity_leader'))return notify('الحذف متاح لرائدة النشاط ومدير النظام فقط','bad');
+ if(!confirm('حذف هذه المشاركة المرفوضة من قائمة المراجعة؟'))return;
+ try{
+  await jsonPost(EP.staff,{action:'delete_submission',token:auth.token,id},true);
+  notify('تم حذف المشاركة المرفوضة');
+  await loadSubmissions();
+ }catch(e){notify(e.message,'bad')}
 }
 
 function officialPrintWindow(docTitle,subTitle,content,opts={}){
