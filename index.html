@@ -466,34 +466,53 @@ function reportScreenScript(){
  })();
  <\/script>`;
 }
-function openDirectProgramReportWindow(bundle,{print=false,pdfMode=false}={}){
+function prepareReportWindow(){
  const w=window.open('','_blank');
- if(!w){alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');return null}
+ if(!w){notify('تعذر فتح نافذة التقرير. افتحي الرابط في Safari مباشرة ثم أعيدي المحاولة.','warn');return null}
+ try{
+  w.document.open();
+  w.document.write(`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>تجهيز التقرير</title><style>body{font-family:Tahoma,Arial,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#f5f6f2;color:#14566a;text-align:center}.box{background:#fff;border:1px solid #d6e2de;border-radius:16px;padding:24px 30px;box-shadow:0 8px 28px #0001;font-size:18px;font-weight:700}</style></head><body><div class="box">جارٍ تجهيز التقرير…</div></body></html>`);
+  w.document.close();
+ }catch{}
+ return w;
+}
+function openDirectProgramReportWindow(bundle,{print=false,pdfMode=false}={},targetWindow=null){
+ const w=targetWindow||window.open('','_blank');
+ if(!w){notify('تعذر فتح نافذة التقرير. افتحي الرابط في Safari مباشرة ثم أعيدي المحاولة.','warn');return null}
  let page=bundle.html.replace('</body>',reportScreenScript()+(print||pdfMode?`<script>
  window.addEventListener('load',()=>setTimeout(()=>{
    ${pdfMode?"alert('لحفظ التقرير PDF اختاري «طباعة» ثم «حفظ كـ PDF / Save as PDF» من خيارات الجهاز.');":""}
    window.focus();window.print();
  },650));
  <\/script>`:'')+'</body>');
- w.document.open();w.document.write(page);w.document.close();return w;
+ try{
+  w.document.open();w.document.write(page);w.document.close();
+ }catch(e){
+  try{w.location='about:blank'}catch{}
+  throw e;
+ }
+ return w;
 }
 async function previewProgramReport(id){
+ const w=prepareReportWindow(); if(!w)return;
  try{
   const bundle=await officialProgramReportBundle(id);
-  openDirectProgramReportWindow(bundle);
- }catch(e){notify(e.message,'warn')}
+  openDirectProgramReportWindow(bundle,{},w);
+ }catch(e){try{w.close()}catch{} notify(e.message,'warn')}
 }
 async function printOfficialProgramReport(id){
+ const w=prepareReportWindow(); if(!w)return;
  try{
   const bundle=await officialProgramReportBundle(id);
-  openDirectProgramReportWindow(bundle,{print:true});
- }catch(e){notify(e.message,'warn')}
+  openDirectProgramReportWindow(bundle,{print:true},w);
+ }catch(e){try{w.close()}catch{} notify(e.message,'warn')}
 }
 async function downloadProgramReportPdf(id){
+ const w=prepareReportWindow(); if(!w)return;
  try{
   const bundle=await officialProgramReportBundle(id);
-  openDirectProgramReportWindow(bundle,{pdfMode:true});
- }catch(e){notify(e.message,'warn')}
+  openDirectProgramReportWindow(bundle,{pdfMode:true},w);
+ }catch(e){try{w.close()}catch{} notify(e.message,'warn')}
 }
 
 async function legacyPrintProgramReport(id){let x=programCache[id];if(!x)return alert('تعذر العثور على البرنامج');let w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');w.document.write('<p style="font-family:Tahoma;text-align:center;padding:40px">جارٍ تجهيز التقرير...</p>');let f=x.form_details||{},files=[],images=[];try{let d=await evidence('list','programs',id);files=d.items||[];for(let it of files){if(String(it.mime_type||'').startsWith('image/')){try{let o=await evidence('open','programs',id,{file_id:it.id});images.push({name:it.original_name,url:o.url})}catch{}}}}catch{}let rows=[['اسم البرنامج',x.title],['المجال',f.domain],['برنامج 10%',f.is_10_percent?'نعم':'لا'],['الهدف',x.objectives],['الفئة المستهدفة',x.audience],['تاريخ التنفيذ',x.start_date],['عدد المستفيدين',f.beneficiaries],['نسبة تحقق الهدف',f.goal_percent?f.goal_percent+'%':''],['مكان التنفيذ',f.location],['المسؤولة عن التنفيذ',x.responsible_teacher],['حالة البرنامج',statusArabic(x.status)],['حالة المراجعة',reviewStatusArabic(x.review_status||'draft')],['وصف التنفيذ',x.description],['الإيجابيات',f.positives],['الصعوبات',f.difficulties],['التوصيات',f.recommendations]];let html=`<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><title>تقرير ${esc(x.title)}</title><style>body{font-family:Tahoma,Arial;color:#173f4c;margin:0;padding:24px}.head{text-align:center;border-bottom:5px solid #14566a;padding-bottom:14px}.head h1{margin:5px}.report{max-width:900px;margin:auto}.grid{display:grid;grid-template-columns:1fr 2fr;border:1px solid #cad9d5}.k,.v{padding:10px;border-bottom:1px solid #d6e2de}.k{font-weight:bold;background:#edf4f2}.photos{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:15px}.photos img{width:100%;max-height:320px;object-fit:contain;border:1px solid #ddd}.file{padding:6px;background:#f1f5f4;margin:4px;border-radius:8px}@media print{body{padding:0}.report{max-width:none}.photos{break-inside:avoid}}</style></head><body><div class="report"><div class="head"><div>الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><h1>تقرير إنجاز برنامج</h1><h2>${esc(x.title)}</h2></div><div class="grid">${rows.map(r=>`<div class="k">${esc(r[0])}</div><div class="v">${esc(r[1]||'—')}</div>`).join('')}</div><h3>المرفقات والشواهد</h3>${files.length?files.map(z=>`<span class="file">${esc(z.original_name)}</span>`).join(''):'<p>لا توجد مرفقات متاحة.</p>'}${images.length?`<div class="photos">${images.map(z=>`<div><img src="${z.url}"><p>${esc(z.name)}</p></div>`).join('')}</div>`:''}<p style="text-align:left;margin-top:30px">مديرة المدرسة: شعاع العنزي</p></div><script>setTimeout(()=>{window.focus();window.print()},900)<\/script></body></html>`;w.document.open();w.document.write(html);w.document.close()}
