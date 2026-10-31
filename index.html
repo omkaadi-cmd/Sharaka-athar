@@ -211,19 +211,28 @@ function logout(){sessionStorage.removeItem('sa_mode');sessionStorage.removeItem
 async function ops(action,extra={}){return jsonPost(EP.ops,{action,...extra})}async function arc(action,extra={}){return jsonPost(EP.archive,{action,...extra})}async function planning(action,extra={},privateCall=true){return jsonPost(EP.planning,{action,...extra},privateCall)}
 function printView(id){document.querySelectorAll('.view').forEach(v=>v.classList.remove('printing'));$(id).classList.add('printing');window.print();$(id).classList.remove('printing')}
 function participantStatusArabic(s){return ({pending:'بانتظار مراجعة رائدة النشاط',approved:'معتمدة',rejected:'مرفوضة',needs_changes:'تحتاج تعديل'})[s]||s||'بانتظار المراجعة'}
+function certificateRoleData(type){
+ const map={
+  student:{label:'الطالبة',p:'مشاركتها',e:'جهودها',i:'إسهامها',to:'لها'},
+  teacher:{label:'المعلمة',p:'مشاركتها',e:'جهودها',i:'إسهامها',to:'لها'},
+  parent:{label:'ولي الأمر',p:'مشاركته',e:'جهوده',i:'إسهامه',to:'له'},
+  volunteer:{label:'المتطوعة',p:'مشاركتها',e:'جهودها',i:'إسهامها',to:'لها'}
+ };
+ return map[type]||{label:'المشارك/ة',p:'مشاركته/ها',e:'جهوده/ها',i:'إسهامه/ها',to:'له/لها'};
+}
 function certificateMarkup(c){
- const issued=new Date(c.issued_at).toLocaleDateString('ar-SA');
+ const issued=new Date(c.issued_at).toLocaleDateString('ar-SA'),r=certificateRoleData(c.participant_type);
  return `<div class="cert-dynamic" id="dynamicCertificate"><div class="cert-content">
  <div><div class="cert-ministry">وزارة التعليم</div><div class="cert-school">الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><div class="cert-city">بحفر الباطن</div><div class="cert-medal"></div></div>
- <div><div class="cert-title">شهادة شكر وتقدير</div><div class="cert-sub">تتقدم إدارة المدرسة بخالص الشكر والتقدير إلى:</div><div class="cert-name">${esc(c.participant_name)}</div>
- <div class="cert-text">تقديرًا لمشاركته الفاعلة وجهوده المتميزة في برنامج</div><div class="cert-program">${esc(c.program_name)}</div>
- <div class="cert-text">وإسهامه الإيجابي في تحقيق أهدافه وإنجاح فعالياته، سائلين الله له دوام التوفيق والتميز.</div></div>
- <div class="cert-bottom"><div><b>تاريخ الإصدار</b><br>${esc(issued)}</div><div style="color:#c49a36;font-size:34px">❦ ❦ ❦</div><div><b>مديرة المدرسة</b><div class="cert-sign">شعاع العنزي</div></div></div>
+ <div><div class="cert-title">شهادة شكر وتقدير</div><div class="cert-sub">تتقدم إدارة المدرسة بخالص الشكر والتقدير إلى ${esc(r.label)}</div><div class="cert-name">${esc(c.participant_name)}</div>
+ <div class="cert-text">تقديرًا لـ${esc(r.p)} الفاعلة و${esc(r.e)} المتميزة في برنامج</div><div class="cert-program">${esc(c.program_name)}</div>
+ <div class="cert-text">و${esc(r.i)} الإيجابي في تحقيق أهدافه وإنجاح فعالياته، سائلين الله ${esc(r.to)} دوام التوفيق والتميز.</div></div>
+ <div class="cert-bottom"><div><b>تاريخ الإصدار</b><br>${esc(issued)}</div><div><b>رائدة النشاط</b><div class="cert-sign">هند الشمري</div></div><div><b>مديرة المدرسة</b><div class="cert-sign">شعاع العنزي</div></div></div>
  </div></div>`;
 }
 async function lookupParticipantRecord(){
  const tracking=$('participantTracking').value.trim().toUpperCase(),participant_name=$('participantLookupName').value.trim(),box=$('participantResult');
- if(!tracking||!participant_name){box.innerHTML='<p class="bad">أدخلي رقم المتابعة واسم المشارك.</p>';return}
+ if(!tracking||!participant_name){box.innerHTML='<p class="bad">هذا المسار القديم غير مستخدم.</p>';return}
  box.innerHTML='<p>جارٍ تحميل السجل...</p>';
  try{
   const d=await jsonPost(EP.participant,{action:'lookup',tracking_code:tracking,participant_name},false),s=d.submission,c=d.certificate;
@@ -257,10 +266,10 @@ async function downloadCertificatePdf(){
 
 
 function certificateHistory(){
- try{return JSON.parse(localStorage.getItem('sharaka_certificates_v3')||'[]')}catch{return[]}
+ try{return JSON.parse(localStorage.getItem('sharaka_certificates_v4')||'[]')}catch{return[]}
 }
 function saveCertificateLocally(c){
- const a=certificateHistory().filter(x=>x.certificate_number!==c.certificate_number);a.unshift(c);localStorage.setItem('sharaka_certificates_v3',JSON.stringify(a.slice(0,100)));renderLocalCertificates();
+ const a=certificateHistory().filter(x=>x.certificate_number!==c.certificate_number);a.unshift(c);localStorage.setItem('sharaka_certificates_v4',JSON.stringify(a.slice(0,100)));renderLocalCertificates();
 }
 function renderIssuedCertificate(c){
  window.currentIssuedCertificate=c;const box=$('issuedCertificateArea');if(!box)return;
@@ -392,8 +401,63 @@ function statusArabic(s){return ({planned:'مخطط',active:'جارٍ التنف
 
 function programReportWarnings(x){const f=x.form_details||{},rules=[['اسم البرنامج',x.title,70],['الهدف',x.objectives,260],['وصف التنفيذ',x.description,520],['الإيجابيات',f.positives,210],['الصعوبات',f.difficulties,210],['التوصيات',f.recommendations,210],['المسؤولة عن التنفيذ',x.responsible_teacher,90]];return rules.filter(r=>String(r[1]||'').length>r[2]).map(r=>r[0])}
 function formatProgramDate(v){if(!v)return '—';try{return new Date(v+'T00:00:00').toLocaleDateString('ar-SA')}catch{return esc(v)}}
-function officialProgramReportStyles(){return `<style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0;background:#fff;font-family:Tahoma,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#10233f}.rpage{width:210mm;height:297mm;overflow:hidden;position:relative;background:#fff;padding:10mm 7mm 7mm}.rpage:before{content:"";position:absolute;top:-22mm;left:-18mm;width:110mm;height:48mm;background:linear-gradient(135deg,#092b55,#173f70 67%,#d7ad4e 68%,#f6d47a 78%,transparent 79%);transform:rotate(-3deg);z-index:0}.rpage:after{content:"";position:absolute;bottom:-22mm;right:-25mm;width:130mm;height:38mm;background:linear-gradient(320deg,#092b55,#173f70 60%,#d7ad4e 61%,#f6d47a 71%,transparent 72%);transform:rotate(3deg);z-index:0}.rc{position:relative;z-index:2;height:100%;display:flex;flex-direction:column}.rtop{height:30mm;display:grid;grid-template-columns:1fr 1fr 1.3fr;align-items:start}.rmin{color:#fff;font-weight:800;font-size:4.8mm;padding-top:1mm;text-align:left}.rmin small{display:block;font-size:2.5mm;font-weight:400}.rschool{text-align:right;font-weight:900;font-size:5mm;line-height:1.45}.ricon{margin:auto;width:18mm;height:18mm;border:1mm solid #d5aa45;border-radius:50%;display:grid;place-items:center;font-size:9mm;background:#fff}.rtitle{width:86mm;margin:-1mm auto 3mm;background:linear-gradient(#143a69,#0b2a50);color:#fff;border:1mm solid #d3a647;border-radius:5mm;text-align:center;font-size:8.5mm;font-weight:900;padding:1.3mm 4mm}.rrow{display:grid;gap:2.5mm;margin:2mm 0}.rrow.two{grid-template-columns:1.45fr 1fr}.rrow.three{grid-template-columns:1.3fr .9fr .75fr}.rbox{border:.45mm solid #d8aa42;border-radius:3mm;background:#fff;padding:2mm 3mm;min-height:13mm;position:relative}.rlab{position:absolute;right:3mm;top:-3.8mm;background:#fff;color:#0b2d57;font-size:3.7mm;font-weight:900;padding:0 1.3mm}.rval{margin-top:2.5mm;font-size:4mm;font-weight:700;line-height:1.45;white-space:pre-wrap;overflow:hidden}.rsec{border:.45mm solid #d8aa42;border-radius:3mm;margin:1.8mm 0;position:relative;background:#fff;overflow:hidden}.rsec .rh{position:absolute;right:-.3mm;top:-.3mm;background:linear-gradient(90deg,#173f70,#0b2c54);color:#fff;border-right:1.6mm solid #d2a13b;padding:1.1mm 4mm 1.1mm 6mm;font-size:4mm;font-weight:900;min-width:42mm;text-align:right}.rsec .rtxt{padding:7mm 3.5mm 2.5mm;font-size:3.7mm;line-height:1.45;white-space:pre-wrap;height:18mm;overflow:hidden}.rsec.desc .rtxt{height:23mm}.rthree{display:grid;grid-template-columns:repeat(3,1fr);gap:2.4mm;margin:1.8mm 0}.rthree .rsec{margin:0}.rthree .rsec .rtxt{height:23mm;font-size:3.35mm}.rbottom{display:grid;grid-template-columns:1fr 2.5fr;gap:2.5mm;margin-top:1.8mm}.rstatus,.revidence{border:.45mm solid #d8aa42;border-radius:3mm;position:relative;min-height:43mm;padding:7mm 3mm 2.5mm}.rstatus .rh,.revidence .rh{position:absolute;right:-.3mm;top:-.3mm;background:#173f70;color:#fff;border-right:1.6mm solid #d2a13b;padding:1.1mm 4mm;font-weight:900;font-size:3.8mm}.rstatus .rval{text-align:center;margin-top:7mm;font-size:4.7mm}.rimgs{height:31mm;display:grid;grid-template-columns:repeat(3,1fr);gap:1.8mm;align-items:center}.rimgs figure{margin:0;height:30mm;border:.3mm solid #cbd3d6;border-radius:2mm;overflow:hidden;background:#fafafa}.rimgs img{width:100%;height:100%;object-fit:contain}.rfiles{font-size:2.4mm;color:#586b73;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rsigns{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:18mm;text-align:center;font-size:3.7mm;font-weight:900;padding:2.5mm 12mm 0}.rsname{font-size:4.8mm;color:#0b2d57;margin-top:1mm}.ryear{position:absolute;left:8mm;bottom:4mm;color:#607279;font-size:2.8mm}</style>`}
-function buildOfficialProgramReport(x,images,files){const f=x.form_details||{},other=files.filter(z=>!String(z.mime_type||'').startsWith('image/'));const pics=images.length?images.slice(0,3).map(z=>`<figure><img src="${z.url}" alt=""></figure>`).join(''):'<div style="grid-column:1/-1;text-align:center;color:#7b878b;font-size:3mm">لا توجد صور شواهد مرفوعة.</div>';const extra=other.length?`<div class="rfiles">مرفقات أخرى: ${other.map(z=>esc(z.original_name)).join(' • ')}</div>`:'';return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8">${officialProgramReportStyles()}</head><body><div class="rpage" id="officialProgramReport"><div class="rc"><div class="rtop"><div class="rmin">وزارة التعليم<small>Ministry of Education</small></div><div class="ricon">📊</div><div class="rschool">الابتدائية السابعة والثلاثون<br>والمتوسطة التاسعة عشر<br>بحفر الباطن</div></div><div class="rtitle">تقرير برنامج</div><div class="rrow two"><div class="rbox"><div class="rlab">اسم البرنامج</div><div class="rval">${esc(x.title||'—')}</div><div style="position:absolute;left:3mm;top:2.5mm;font-size:3.4mm"><b>برنامج 10%</b> ${f.is_10_percent?'☑':'☐'}</div></div><div class="rbox"><div class="rlab">المجال</div><div class="rval">${esc(f.domain||'—')}</div><div style="margin-top:1mm;font-size:3.3mm"><b>الفئة المستهدفة:</b> ${esc(x.audience||'—')}</div></div></div><div class="rrow three"><div class="rbox"><div class="rlab">تاريخ التنفيذ</div><div class="rval">من: ${formatProgramDate(x.start_date)}<br>إلى: ${formatProgramDate(x.end_date)}</div></div><div class="rbox"><div class="rlab">مكان التنفيذ</div><div class="rval">${esc(f.location||'—')}</div></div><div class="rbox"><div class="rlab">عدد المستفيدين</div><div class="rval">${esc(f.beneficiaries||'—')}</div><div style="font-size:2.8mm"><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</div></div></div><div class="rbox"><div class="rlab">المسؤولة عن التنفيذ</div><div class="rval">${esc(x.responsible_teacher||'—')}</div></div><div class="rsec"><div class="rh">الهدف</div><div class="rtxt">${esc(x.objectives||'—')}</div></div><div class="rsec desc"><div class="rh">وصف التنفيذ</div><div class="rtxt">${esc(x.description||'—')}</div></div><div class="rthree"><div class="rsec"><div class="rh">الإيجابيات</div><div class="rtxt">${esc(f.positives||'—')}</div></div><div class="rsec"><div class="rh">الصعوبات</div><div class="rtxt">${esc(f.difficulties||'—')}</div></div><div class="rsec"><div class="rh">التوصيات</div><div class="rtxt">${esc(f.recommendations||'—')}</div></div></div><div class="rbottom"><div class="rstatus"><div class="rh">الحالة</div><div class="rval">${esc(statusArabic(x.status))}</div></div><div class="revidence"><div class="rh">المرفقات والشواهد</div><div class="rimgs">${pics}</div>${extra}</div></div><div class="rsigns"><div>معلمة / مسؤولة البرنامج<div class="rsname">${esc(x.responsible_teacher||'—')}</div></div><div>مديرة المدرسة<div class="rsname">شعاع العنزي</div></div></div><div class="ryear">العام الدراسي 1448هـ</div></div></div></body></html>`}
+function officialProgramReportStyles(){
+ return `<style>
+ @page{size:A4 portrait;margin:0}
+ *{box-sizing:border-box}
+ html,body{margin:0;font-family:Tahoma,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#10233f;background:#edf1f0}
+ body{display:flex;justify-content:center;align-items:flex-start;padding:10px;overflow-x:hidden}
+ .rpage{width:210mm;height:297mm;overflow:hidden;position:relative;background:#fff;padding:8mm 8mm 7mm;box-shadow:0 4px 24px #0002}
+ .rpage:before{content:"";position:absolute;top:-14mm;left:-9mm;width:92mm;height:39mm;background:linear-gradient(135deg,#08294f 0 62%,#d5a744 63% 70%,#f7da82 71% 75%,transparent 76%);transform:rotate(-4deg);z-index:0}
+ .rpage:after{content:"";position:absolute;bottom:-15mm;right:-12mm;width:118mm;height:32mm;background:linear-gradient(320deg,#08294f 0 60%,#d5a744 61% 69%,#f7da82 70% 74%,transparent 75%);transform:rotate(3deg);z-index:0}
+ .rc{position:relative;z-index:2;height:100%;display:grid;grid-template-rows:31mm 15mm 28mm 15mm 23mm 31mm 30mm 54mm 22mm;row-gap:2.2mm}
+ .rtop{display:grid;grid-template-columns:1.1fr .75fr 1.35fr;align-items:start;direction:ltr}
+ .rmin{grid-column:1;direction:rtl;color:#fff;font-weight:900;font-size:4.8mm;line-height:1.25;padding:2mm 0 0 3mm;text-align:left}
+ .rmin small{display:block;font-size:2.35mm;font-weight:500;letter-spacing:.2mm;margin-top:.4mm}
+ .ricon{grid-column:2;direction:rtl;margin:1mm auto 0;width:19mm;height:19mm;border:1mm solid #d6aa48;border-radius:50%;display:flex;align-items:flex-end;justify-content:center;gap:1.1mm;padding:3.8mm 3mm;background:#fff;box-shadow:0 0 0 .7mm #fff,0 0 0 1mm #e6c46e}
+ .ricon i{display:block;width:2.7mm;border-radius:.7mm .7mm 0 0}.ricon i:nth-child(1){height:6mm;background:#1a884a}.ricon i:nth-child(2){height:10mm;background:#e0ad35}.ricon i:nth-child(3){height:13mm;background:#153d70}
+ .rschool{grid-column:3;direction:rtl;text-align:right;font-weight:900;font-size:4.9mm;line-height:1.4;padding-top:.8mm;color:#0d213d}
+ .rtitle{width:92mm;height:15mm;margin:0 auto;background:linear-gradient(180deg,#153d70,#092b53);color:#fff;border:1mm solid #d1a342;border-radius:5mm;text-align:center;font-size:8.2mm;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 1mm 0 #f1dfac}
+ .rrow{display:grid;gap:2.5mm;height:100%}.rrow.two{grid-template-columns:1.45fr 1fr}.rrow.three{grid-template-columns:1.35fr .9fr .75fr}
+ .rbox{border:.5mm solid #d6a640;border-radius:3.8mm;background:linear-gradient(180deg,#fff,#fbfcff);padding:3.5mm 3.2mm 2.2mm;position:relative;min-width:0;overflow:hidden}
+ .rlab{position:absolute;right:4mm;top:-.2mm;color:#0b2d57;font-size:3.75mm;font-weight:900;padding:0 1.5mm;background:#fff;transform:translateY(-45%)}
+ .rval{font-size:4.2mm;font-weight:700;line-height:1.5;white-space:pre-wrap;overflow:hidden;max-height:100%}
+ .rmeta{display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin-top:1.2mm;font-size:3.25mm;color:#263a53}.rmeta b{color:#0b2d57}
+ .rten{position:absolute;left:4mm;top:3mm;font-size:3.4mm;font-weight:800;display:flex;align-items:center;gap:1mm}.rcheck{display:inline-grid;place-items:center;width:5mm;height:5mm;border:.55mm solid #d3a13c;border-radius:1.2mm;color:#0b2d57;font-size:3.5mm;background:#fff}
+ .rsec{border:.5mm solid #d6a640;border-radius:3.8mm;position:relative;background:#fff;overflow:hidden;height:100%}
+ .rsec .rh{position:absolute;right:-.3mm;top:-.3mm;background:linear-gradient(90deg,#183f70,#0a2b53);color:#fff;border-right:1.8mm solid #d2a03b;padding:1.3mm 5mm 1.3mm 7mm;font-size:4mm;font-weight:900;min-width:45mm;text-align:right}
+ .rsec .rtxt{padding:7.5mm 4mm 2.8mm;font-size:3.75mm;line-height:1.55;white-space:pre-wrap;height:100%;overflow:hidden}
+ .rthree{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm;height:100%}.rthree .rsec .rtxt{font-size:3.35mm;padding-top:7.2mm}
+ .rbottom{display:grid;grid-template-columns:1fr 2.65fr;gap:2.5mm;height:100%}
+ .rstatus,.revidence{border:.5mm solid #d6a640;border-radius:3.8mm;position:relative;background:#fff;overflow:hidden;padding:7.5mm 3mm 2.5mm;height:100%}
+ .rstatus .rh,.revidence .rh{position:absolute;right:-.3mm;top:-.3mm;background:linear-gradient(90deg,#183f70,#0a2b53);color:#fff;border-right:1.8mm solid #d2a03b;padding:1.25mm 5mm;font-weight:900;font-size:3.9mm;min-width:45mm;text-align:right}
+ .rstatus .rval{height:100%;display:grid;place-items:center;text-align:center;font-size:5mm;color:#0c2c54}
+ .rimgs{height:39mm;display:grid;gap:2mm;align-items:center;justify-content:center}.rimgs.count-1{grid-template-columns:1fr}.rimgs.count-2{grid-template-columns:repeat(2,1fr)}.rimgs.count-3{grid-template-columns:repeat(3,1fr)}
+ .rimgs figure{margin:0;height:38mm;border:.35mm solid #cbd3d6;border-radius:2.2mm;overflow:hidden;background:#fbfbfb;display:grid;place-items:center}.rimgs.count-1 figure{width:52%;justify-self:center}.rimgs img{width:100%;height:100%;object-fit:contain}
+ .rfiles{font-size:2.45mm;color:#586b73;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm}
+ .rsigns{display:grid;grid-template-columns:1fr 1fr;gap:26mm;align-items:end;text-align:center;font-size:3.75mm;font-weight:900;padding:0 15mm}
+ .rsname{font-size:5mm;color:#0b2d57;margin-top:1.2mm}.rsline{height:.5mm;background:#d5a744;width:34mm;margin:1.5mm auto 0;border-radius:1mm}.ryear{font-size:2.9mm;color:#607279;margin-top:.7mm;font-weight:500}
+ @media print{html,body{background:#fff;padding:0;display:block}.rpage{box-shadow:none;transform:none!important;margin:0}}
+ </style>`
+}
+function buildOfficialProgramReport(x,images,files){
+ const f=x.form_details||{},other=files.filter(z=>!String(z.mime_type||'').startsWith('image/'));
+ const count=Math.min(images.length,3);
+ const pics=count?images.slice(0,3).map(z=>`<figure><img src="${z.url}" alt=""></figure>`).join(''):'<div style="grid-column:1/-1;text-align:center;color:#7b878b;font-size:3mm">لا توجد صور شواهد مرفوعة.</div>';
+ const extra=other.length?`<div class="rfiles">مرفقات أخرى محفوظة في سجل البرنامج: ${other.map(z=>esc(z.original_name)).join(' • ')}</div>`:'';
+ return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">${officialProgramReportStyles()}</head><body><div class="rpage" id="officialProgramReport"><div class="rc">
+ <div class="rtop"><div class="rmin">وزارة التعليم<small>Ministry of Education</small></div><div class="ricon"><i></i><i></i><i></i></div><div class="rschool">الابتدائية السابعة والثلاثون<br>والمتوسطة التاسعة عشر<br>بحفر الباطن</div></div>
+ <div class="rtitle">تقرير برنامج</div>
+ <div class="rrow two"><div class="rbox"><div class="rlab">اسم البرنامج</div><div class="rval">${esc(x.title||'—')}</div><div class="rten"><span class="rcheck">${f.is_10_percent?'✓':''}</span> برنامج 10%</div></div><div class="rbox"><div class="rlab">المجال</div><div class="rval">${esc(f.domain||'—')}</div><div class="rmeta"><span><b>الفئة المستهدفة:</b> ${esc(x.audience||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div></div></div>
+ <div class="rrow three"><div class="rbox"><div class="rlab">تاريخ التنفيذ</div><div class="rval">من: ${formatProgramDate(x.start_date)}<br>إلى: ${formatProgramDate(x.end_date)}</div></div><div class="rbox"><div class="rlab">مكان التنفيذ</div><div class="rval">${esc(f.location||'—')}</div></div><div class="rbox"><div class="rlab">عدد المستفيدين</div><div class="rval">${esc(f.beneficiaries||'—')}</div></div></div>
+ <div class="rbox"><div class="rlab">المسؤولة عن التنفيذ</div><div class="rval">${esc(x.responsible_teacher||'—')}</div></div>
+ <div class="rsec"><div class="rh">الهدف</div><div class="rtxt">${esc(x.objectives||'—')}</div></div>
+ <div class="rsec"><div class="rh">وصف التنفيذ</div><div class="rtxt">${esc(x.description||'—')}</div></div>
+ <div class="rthree"><div class="rsec"><div class="rh">الإيجابيات</div><div class="rtxt">${esc(f.positives||'—')}</div></div><div class="rsec"><div class="rh">الصعوبات</div><div class="rtxt">${esc(f.difficulties||'—')}</div></div><div class="rsec"><div class="rh">التوصيات</div><div class="rtxt">${esc(f.recommendations||'—')}</div></div></div>
+ <div class="rbottom"><div class="rstatus"><div class="rh">الحالة</div><div class="rval">${esc(statusArabic(x.status))}</div></div><div class="revidence"><div class="rh">المرفقات والشواهد</div><div class="rimgs count-${count}">${pics}</div>${extra}</div></div>
+ <div class="rsigns"><div>معلمة / مسؤولة البرنامج<div class="rsname">${esc(x.responsible_teacher||'—')}</div><div class="rsline"></div></div><div>مديرة المدرسة<div class="rsname">شعاع العنزي</div><div class="rsline"></div><div class="ryear">العام الدراسي 1448هـ</div></div></div>
+ </div></div><script>(function(){function fit(){if(matchMedia('print').matches)return;const p=document.querySelector('.rpage');if(!p)return;const s=Math.min(1,(window.innerWidth-12)/794);p.style.transform='scale('+s+')';p.style.transformOrigin='top center';document.body.style.height=(1123*s+20)+'px'}addEventListener('load',fit);addEventListener('resize',fit)})();<\/script></body></html>`
+}
 async function officialProgramReportBundle(id){const x=programCache[id];if(!x)throw Error('تعذر العثور على البرنامج');const warnings=programReportWarnings(x);if(warnings.length)throw Error('النص طويل على صفحة A4 واحدة. اختصري الحقول التالية: '+warnings.join('، '));let files=[],images=[];try{let d=await evidence('list','programs',id);files=d.items||[];for(const it of files){if(images.length>=3)break;if(String(it.mime_type||'').startsWith('image/')){try{let o=await evidence('open','programs',id,{file_id:it.id});images.push({name:it.original_name,url:o.url})}catch{}}}}catch{}return {x,files,images,html:buildOfficialProgramReport(x,images,files)}}
 function previewProgramReport(id){officialProgramReportBundle(id).then(b=>{const w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');w.document.open();w.document.write(b.html);w.document.close()}).catch(e=>notify(e.message,'warn'))}
 function printOfficialProgramReport(id){officialProgramReportBundle(id).then(b=>{const w=window.open('','_blank');if(!w)return alert('اسمحي بفتح النوافذ المنبثقة ثم أعيدي المحاولة.');w.document.open();w.document.write(b.html.replace('</body>','<script>setTimeout(()=>window.print(),700)<\/script></body>'));w.document.close()}).catch(e=>notify(e.message,'warn'))}
