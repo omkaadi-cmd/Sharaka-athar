@@ -403,60 +403,49 @@ function programReportWarnings(x){const f=x.form_details||{},rules=[['اسم ا�
 function formatProgramDate(v){if(!v)return '—';try{return new Date(v+'T00:00:00').toLocaleDateString('ar-SA')}catch{return esc(v)}}
 function officialProgramReportStyles(){
  return `<style>
+ *{box-sizing:border-box}html,body{margin:0;background:#eef2f1;font-family:Tahoma,Arial,sans-serif;color:#132f3a;-webkit-print-color-adjust:exact;print-color-adjust:exact}
  @page{size:A4 portrait;margin:0}
- *{box-sizing:border-box}
- html,body{margin:0;font-family:Tahoma,Arial,sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#10233f;background:#edf1f0}
- body{display:flex;justify-content:center;align-items:flex-start;padding:10px;overflow-x:hidden}
- .rpage{width:210mm;height:297mm;overflow:hidden;position:relative;background:#fff;padding:8mm 8mm 7mm;box-shadow:0 4px 24px #0002}
- .rpage:before{content:"";position:absolute;top:-14mm;left:-9mm;width:92mm;height:39mm;background:linear-gradient(135deg,#08294f 0 62%,#d5a744 63% 70%,#f7da82 71% 75%,transparent 76%);transform:rotate(-4deg);z-index:0}
- .rpage:after{content:"";position:absolute;bottom:-15mm;right:-12mm;width:118mm;height:32mm;background:linear-gradient(320deg,#08294f 0 60%,#d5a744 61% 69%,#f7da82 70% 74%,transparent 75%);transform:rotate(3deg);z-index:0}
- .rc{position:relative;z-index:2;height:100%;display:grid;grid-template-rows:31mm 15mm 28mm 15mm 23mm 31mm 30mm 54mm 22mm;row-gap:2.2mm}
- .rtop{display:grid;grid-template-columns:1.1fr .75fr 1.35fr;align-items:start;direction:ltr}
- .rmin{grid-column:1;direction:rtl;color:#fff;font-weight:900;font-size:4.8mm;line-height:1.25;padding:2mm 0 0 3mm;text-align:left}
- .rmin small{display:block;font-size:2.35mm;font-weight:500;letter-spacing:.2mm;margin-top:.4mm}
- .ricon{grid-column:2;direction:rtl;margin:1mm auto 0;width:19mm;height:19mm;border:1mm solid #d6aa48;border-radius:50%;display:flex;align-items:flex-end;justify-content:center;gap:1.1mm;padding:3.8mm 3mm;background:#fff;box-shadow:0 0 0 .7mm #fff,0 0 0 1mm #e6c46e}
- .ricon i{display:block;width:2.7mm;border-radius:.7mm .7mm 0 0}.ricon i:nth-child(1){height:6mm;background:#1a884a}.ricon i:nth-child(2){height:10mm;background:#e0ad35}.ricon i:nth-child(3){height:13mm;background:#153d70}
- .rschool{grid-column:3;direction:rtl;text-align:right;font-weight:900;font-size:4.9mm;line-height:1.4;padding-top:.8mm;color:#0d213d}
- .rtitle{width:92mm;height:15mm;margin:0 auto;background:linear-gradient(180deg,#153d70,#092b53);color:#fff;border:1mm solid #d1a342;border-radius:5mm;text-align:center;font-size:8.2mm;font-weight:900;display:flex;align-items:center;justify-content:center;box-shadow:0 1mm 0 #f1dfac}
- .rrow{display:grid;gap:2.5mm;height:100%}.rrow.two{grid-template-columns:1.45fr 1fr}.rrow.three{grid-template-columns:1.35fr .9fr .75fr}
- .rbox{border:.5mm solid #d6a640;border-radius:3.8mm;background:linear-gradient(180deg,#fff,#fbfcff);padding:3.5mm 3.2mm 2.2mm;position:relative;min-width:0;overflow:hidden}
- .rlab{position:absolute;right:4mm;top:-.2mm;color:#0b2d57;font-size:3.75mm;font-weight:900;padding:0 1.5mm;background:#fff;transform:translateY(-45%)}
- .rval{font-size:4.2mm;font-weight:700;line-height:1.5;white-space:pre-wrap;overflow:hidden;max-height:100%}
- .rmeta{display:grid;grid-template-columns:1fr 1fr;gap:2mm;margin-top:1.2mm;font-size:3.25mm;color:#263a53}.rmeta b{color:#0b2d57}
- .rten{position:absolute;left:4mm;top:3mm;font-size:3.4mm;font-weight:800;display:flex;align-items:center;gap:1mm}.rcheck{display:inline-grid;place-items:center;width:5mm;height:5mm;border:.55mm solid #d3a13c;border-radius:1.2mm;color:#0b2d57;font-size:3.5mm;background:#fff}
- .rsec{border:.5mm solid #d6a640;border-radius:3.8mm;position:relative;background:#fff;overflow:hidden;height:100%}
- .rsec .rh{position:absolute;right:-.3mm;top:-.3mm;background:linear-gradient(90deg,#183f70,#0a2b53);color:#fff;border-right:1.8mm solid #d2a03b;padding:1.3mm 5mm 1.3mm 7mm;font-size:4mm;font-weight:900;min-width:45mm;text-align:right}
- .rsec .rtxt{padding:7.5mm 4mm 2.8mm;font-size:3.75mm;line-height:1.55;white-space:pre-wrap;height:100%;overflow:hidden}
- .rthree{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5mm;height:100%}.rthree .rsec .rtxt{font-size:3.35mm;padding-top:7.2mm}
- .rbottom{display:grid;grid-template-columns:1fr 2.65fr;gap:2.5mm;height:100%}
- .rstatus,.revidence{border:.5mm solid #d6a640;border-radius:3.8mm;position:relative;background:#fff;overflow:hidden;padding:7.5mm 3mm 2.5mm;height:100%}
- .rstatus .rh,.revidence .rh{position:absolute;right:-.3mm;top:-.3mm;background:linear-gradient(90deg,#183f70,#0a2b53);color:#fff;border-right:1.8mm solid #d2a03b;padding:1.25mm 5mm;font-weight:900;font-size:3.9mm;min-width:45mm;text-align:right}
- .rstatus .rval{height:100%;display:grid;place-items:center;text-align:center;font-size:5mm;color:#0c2c54}
- .rimgs{height:39mm;display:grid;gap:2mm;align-items:center;justify-content:center}.rimgs.count-1{grid-template-columns:1fr}.rimgs.count-2{grid-template-columns:repeat(2,1fr)}.rimgs.count-3{grid-template-columns:repeat(3,1fr)}
- .rimgs figure{margin:0;height:38mm;border:.35mm solid #cbd3d6;border-radius:2.2mm;overflow:hidden;background:#fbfbfb;display:grid;place-items:center}.rimgs.count-1 figure{width:52%;justify-self:center}.rimgs img{width:100%;height:100%;object-fit:contain}
- .rfiles{font-size:2.45mm;color:#586b73;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1mm}
- .rsigns{display:grid;grid-template-columns:1fr 1fr;gap:26mm;align-items:end;text-align:center;font-size:3.75mm;font-weight:900;padding:0 15mm}
- .rsname{font-size:5mm;color:#0b2d57;margin-top:1.2mm}.rsline{height:.5mm;background:#d5a744;width:34mm;margin:1.5mm auto 0;border-radius:1mm}.ryear{font-size:2.9mm;color:#607279;margin-top:.7mm;font-weight:500}
- @media print{html,body{background:#fff;padding:0;display:block}.rpage{box-shadow:none;transform:none!important;margin:0}}
- </style>`
+ .report-page{width:794px;height:1123px;background:#fff;margin:0 auto;padding:34px 38px 30px;overflow:hidden;position:relative;display:flex;flex-direction:column;gap:10px}
+ .report-header{border:2px solid #d2b15f;border-top:10px solid #123f5a;border-radius:10px;padding:14px 18px 12px;text-align:center;position:relative}
+ .report-header .school{font-size:19px;font-weight:800;color:#123f5a;line-height:1.45}.report-header .city{font-size:13px;color:#61767d}.report-header h1{margin:7px 0 0;font-size:31px;color:#123f5a}.report-header .year{position:absolute;left:14px;bottom:10px;font-size:12px;color:#677b82}
+ .info-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.field{border:1px solid #d3dedb;border-radius:8px;padding:7px 9px;background:#fbfcfc;min-height:58px}.field.w2{grid-column:span 2}.field.w4{grid-column:1/-1}.label{font-size:11px;font-weight:700;color:#0e5969;margin-bottom:3px}.value{font-size:15px;font-weight:700;line-height:1.35;word-break:break-word}.value.small{font-size:13px}.ten{display:inline-block;background:#fff6df;border:1px solid #d5b365;color:#805d12;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:700}
+ .section{border:1px solid #d3dedb;border-radius:8px;overflow:hidden;background:#fff}.section-title{background:#123f5a;color:#fff;padding:5px 10px;font-size:14px;font-weight:700}.section-body{padding:8px 10px;font-size:13px;line-height:1.55;white-space:pre-wrap;overflow:hidden}.section.goal .section-body{height:63px}.section.desc .section-body{height:76px}
+ .triple{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.triple .section-body{height:82px;font-size:12px}
+ .evidence{border:1px solid #d3dedb;border-radius:8px;overflow:hidden}.evidence-title{background:#123f5a;color:#fff;padding:5px 10px;font-size:14px;font-weight:700}.photos{display:grid;gap:7px;padding:8px;height:186px;align-items:stretch}.photos.count-1{grid-template-columns:1fr}.photos.count-2{grid-template-columns:repeat(2,1fr)}.photos.count-3{grid-template-columns:repeat(3,1fr)}.photo{border:1px solid #d8e1df;border-radius:7px;overflow:hidden;background:#fafafa;display:flex;align-items:center;justify-content:center}.photo img{width:100%;height:100%;object-fit:contain;display:block}.no-photo{display:flex;align-items:center;justify-content:center;color:#71848a;font-size:13px;height:100%}.attachments-note{font-size:10px;color:#6b7e84;padding:0 8px 7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .footer-sign{margin-top:auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;text-align:center;padding-top:8px}.sig-title{font-size:12px;color:#61767d}.sig-name{font-size:16px;font-weight:800;color:#123f5a;margin-top:3px}.sig-line{border-top:1px solid #9aa9a6;margin-top:14px}.footer-note{font-size:10px;color:#7a8d92;text-align:center;margin-top:4px}
+ @media print{html,body{background:#fff;width:794px;height:1123px}.report-page{margin:0;box-shadow:none}}
+ </style>`;
 }
 function buildOfficialProgramReport(x,images,files){
  const f=x.form_details||{},other=files.filter(z=>!String(z.mime_type||'').startsWith('image/'));
- const count=Math.min(images.length,3);
- const pics=count?images.slice(0,3).map(z=>`<figure><img src="${z.url}" alt=""></figure>`).join(''):'<div style="grid-column:1/-1;text-align:center;color:#7b878b;font-size:3mm">لا توجد صور شواهد مرفوعة.</div>';
- const extra=other.length?`<div class="rfiles">مرفقات أخرى محفوظة في سجل البرنامج: ${other.map(z=>esc(z.original_name)).join(' • ')}</div>`:'';
- return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">${officialProgramReportStyles()}</head><body><div class="rpage" id="officialProgramReport"><div class="rc">
- <div class="rtop"><div class="rmin">وزارة التعليم<small>Ministry of Education</small></div><div class="ricon"><i></i><i></i><i></i></div><div class="rschool">الابتدائية السابعة والثلاثون<br>والمتوسطة التاسعة عشر<br>بحفر الباطن</div></div>
- <div class="rtitle">تقرير برنامج</div>
- <div class="rrow two"><div class="rbox"><div class="rlab">اسم البرنامج</div><div class="rval">${esc(x.title||'—')}</div><div class="rten"><span class="rcheck">${f.is_10_percent?'✓':''}</span> برنامج 10%</div></div><div class="rbox"><div class="rlab">المجال</div><div class="rval">${esc(f.domain||'—')}</div><div class="rmeta"><span><b>الفئة المستهدفة:</b> ${esc(x.audience||'—')}</span><span><b>تحقق الهدف:</b> ${esc(f.goal_percent||'—')}%</span></div></div></div>
- <div class="rrow three"><div class="rbox"><div class="rlab">تاريخ التنفيذ</div><div class="rval">من: ${formatProgramDate(x.start_date)}<br>إلى: ${formatProgramDate(x.end_date)}</div></div><div class="rbox"><div class="rlab">مكان التنفيذ</div><div class="rval">${esc(f.location||'—')}</div></div><div class="rbox"><div class="rlab">عدد المستفيدين</div><div class="rval">${esc(f.beneficiaries||'—')}</div></div></div>
- <div class="rbox"><div class="rlab">المسؤولة عن التنفيذ</div><div class="rval">${esc(x.responsible_teacher||'—')}</div></div>
- <div class="rsec"><div class="rh">الهدف</div><div class="rtxt">${esc(x.objectives||'—')}</div></div>
- <div class="rsec"><div class="rh">وصف التنفيذ</div><div class="rtxt">${esc(x.description||'—')}</div></div>
- <div class="rthree"><div class="rsec"><div class="rh">الإيجابيات</div><div class="rtxt">${esc(f.positives||'—')}</div></div><div class="rsec"><div class="rh">الصعوبات</div><div class="rtxt">${esc(f.difficulties||'—')}</div></div><div class="rsec"><div class="rh">التوصيات</div><div class="rtxt">${esc(f.recommendations||'—')}</div></div></div>
- <div class="rbottom"><div class="rstatus"><div class="rh">الحالة</div><div class="rval">${esc(statusArabic(x.status))}</div></div><div class="revidence"><div class="rh">المرفقات والشواهد</div><div class="rimgs count-${count}">${pics}</div>${extra}</div></div>
- <div class="rsigns"><div>معلمة / مسؤولة البرنامج<div class="rsname">${esc(x.responsible_teacher||'—')}</div><div class="rsline"></div></div><div>مديرة المدرسة<div class="rsname">شعاع العنزي</div><div class="rsline"></div><div class="ryear">العام الدراسي 1448هـ</div></div></div>
- </div></div><script>(function(){function fit(){if(matchMedia('print').matches)return;const p=document.querySelector('.rpage');if(!p)return;const s=Math.min(1,(window.innerWidth-12)/794);p.style.transform='scale('+s+')';p.style.transformOrigin='top center';document.body.style.height=(1123*s+20)+'px'}addEventListener('load',fit);addEventListener('resize',fit)})();<\/script></body></html>`
+ const pics=images.slice(0,3),count=pics.length;
+ const photos=count?pics.map(z=>`<div class="photo"><img src="${z.url}" alt=""></div>`).join(''):'<div class="no-photo">لا توجد صور شواهد مرفوعة</div>';
+ const otherText=other.length?'مرفقات أخرى محفوظة في سجل البرنامج: '+other.map(z=>z.original_name).join(' • '):'';
+ return `<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">${officialProgramReportStyles()}</head><body><div class="report-page" id="officialProgramReport">
+ <header class="report-header"><div class="school">الابتدائية السابعة والثلاثون والمتوسطة التاسعة عشر</div><div class="city">بحفر الباطن</div><h1>تقرير برنامج</h1><div class="year">العام الدراسي 1448هـ</div></header>
+ <div class="info-grid">
+  <div class="field w2"><div class="label">اسم البرنامج</div><div class="value">${esc(x.title||'—')}</div></div>
+  <div class="field"><div class="label">المجال</div><div class="value small">${esc(f.domain||'—')}</div></div>
+  <div class="field"><div class="label">برنامج 10%</div><div class="value">${f.is_10_percent?'<span class="ten">نعم ✓</span>':'لا'}</div></div>
+  <div class="field"><div class="label">الفئة المستهدفة</div><div class="value small">${esc(x.audience||'—')}</div></div>
+  <div class="field"><div class="label">عدد المستفيدين</div><div class="value">${esc(f.beneficiaries||'—')}</div></div>
+  <div class="field"><div class="label">نسبة تحقق الهدف</div><div class="value">${esc(f.goal_percent||'—')}%</div></div>
+  <div class="field"><div class="label">الحالة</div><div class="value small">${esc(statusArabic(x.status))}</div></div>
+  <div class="field w2"><div class="label">تاريخ التنفيذ</div><div class="value small">من ${formatProgramDate(x.start_date)} إلى ${formatProgramDate(x.end_date)}</div></div>
+  <div class="field"><div class="label">مكان التنفيذ</div><div class="value small">${esc(f.location||'—')}</div></div>
+  <div class="field"><div class="label">المسؤولة عن التنفيذ</div><div class="value small">${esc(x.responsible_teacher||'—')}</div></div>
+ </div>
+ <section class="section goal"><div class="section-title">الهدف</div><div class="section-body">${esc(x.objectives||'—')}</div></section>
+ <section class="section desc"><div class="section-title">وصف التنفيذ</div><div class="section-body">${esc(x.description||'—')}</div></section>
+ <div class="triple">
+  <section class="section"><div class="section-title">الإيجابيات</div><div class="section-body">${esc(f.positives||'—')}</div></section>
+  <section class="section"><div class="section-title">الصعوبات</div><div class="section-body">${esc(f.difficulties||'—')}</div></section>
+  <section class="section"><div class="section-title">التوصيات</div><div class="section-body">${esc(f.recommendations||'—')}</div></section>
+ </div>
+ <section class="evidence"><div class="evidence-title">المرفقات والشواهد</div><div class="photos count-${count||1}">${photos}</div>${otherText?`<div class="attachments-note">${esc(otherText)}</div>`:''}</section>
+ <footer class="footer-sign"><div><div class="sig-title">معلمة / مسؤولة البرنامج</div><div class="sig-name">${esc(x.responsible_teacher||'—')}</div><div class="sig-line"></div></div><div><div class="sig-title">رائدة النشاط</div><div class="sig-name">هند الشمري</div><div class="sig-line"></div></div><div><div class="sig-title">مديرة المدرسة</div><div class="sig-name">شعاع العنزي</div><div class="sig-line"></div></div></footer>
+ <div class="footer-note">منصة شراكة وأثر | تقرير برنامج رسمي</div>
+ </div></body></html>`;
 }
 async function officialProgramReportBundle(id){const x=programCache[id];if(!x)throw Error('تعذر العثور على البرنامج');const warnings=programReportWarnings(x);if(warnings.length)throw Error('النص طويل على صفحة A4 واحدة. اختصري الحقول التالية: '+warnings.join('، '));let files=[],images=[];try{let d=await evidence('list','programs',id);files=d.items||[];for(const it of files){if(images.length>=3)break;if(String(it.mime_type||'').startsWith('image/')){try{let o=await evidence('open','programs',id,{file_id:it.id});images.push({name:it.original_name,url:o.url})}catch{}}}}catch{}return {x,files,images,html:buildOfficialProgramReport(x,images,files)}}
 async function officialProgramReportSnapshot(id){
@@ -474,7 +463,7 @@ async function officialProgramReportSnapshot(id){
   });
   const doc=frame.contentDocument;
   if(doc?.fonts?.ready)await doc.fonts.ready;
-  const page=doc.querySelector('.rpage');
+  const page=doc.querySelector('.report-page');
   if(!page)throw Error('تعذر تجهيز قالب التقرير');
   page.style.transform='none';
   page.style.transformOrigin='top left';
